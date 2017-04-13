@@ -31,4 +31,6 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 
 	testCompile 'com.google.code.gson:gson:2.8.0'
+
+	compile group: 'org.jsoup', name: 'jsoup', version: '1.10.2'
 }
