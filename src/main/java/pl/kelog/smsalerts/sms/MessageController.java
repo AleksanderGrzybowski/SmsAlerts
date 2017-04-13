@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/gateway")
 class MessageController {
@@ -15,6 +18,14 @@ class MessageController {
     
     public MessageController(MessageService service) {
         this.service = service;
+    }
+    
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity<List<ListMessageDto>> list() {
+        return new ResponseEntity<>(
+                service.list().stream().map(ListMessageDto::new).collect(Collectors.toList()),
+                HttpStatus.OK
+        );
     }
     
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -44,6 +55,19 @@ class MessageController {
         
         public MessageDeliveryStatusDto(MessageDeliveryStatus status) {
             this.status = status;
+        }
+    }
+    
+    private class ListMessageDto {
+        public final Long id;
+        public final String recipient, text;
+        public final String status;
+        
+        public ListMessageDto(Message message) {
+            this.id = message.getId();
+            this.recipient = message.getRecipient();
+            this.text = message.getText();
+            this.status = message.getStatus().toString();
         }
     }
 }

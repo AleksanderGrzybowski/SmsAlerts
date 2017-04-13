@@ -2,9 +2,12 @@ package pl.kelog.smsalerts.sms;
 
 import org.junit.Before;
 import org.junit.Test;
-import pl.kelog.smsalerts.validation.ValidationException;
 import pl.kelog.smsalerts.gateway.GatewayService;
+import pl.kelog.smsalerts.validation.ValidationException;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -33,6 +36,17 @@ public class MessageServiceImplTest {
         assertThat(status).isEqualTo(MessageDeliveryStatus.OK);
         verify(gatewayService, times(1)).send("+123", "text");
         verify(repository, times(1)).save(sent);
+    }
+    
+    @Test
+    public void should_list_all_messages() {
+        List<Message> expected = asList(new Message(1L, "+123", "text", MessageDeliveryStatus.OK));
+        when(repository.findAll()).thenReturn(expected);
+        
+        List<Message> result = service.list();
+        
+        assertThat(result).isEqualTo(expected);
+        verify(repository, atLeastOnce()).findAll();
     }
     
     @Test(expected = ValidationException.class)

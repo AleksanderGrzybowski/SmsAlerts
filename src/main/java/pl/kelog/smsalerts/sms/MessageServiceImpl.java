@@ -3,6 +3,8 @@ package pl.kelog.smsalerts.sms;
 import pl.kelog.smsalerts.gateway.GatewayService;
 import pl.kelog.smsalerts.validation.ValidationException;
 
+import java.util.List;
+
 class MessageServiceImpl implements MessageService {
     
     private final GatewayService gatewayService;
@@ -11,6 +13,11 @@ class MessageServiceImpl implements MessageService {
     public MessageServiceImpl(GatewayService gatewayService, MessageRepository repository) {
         this.gatewayService = gatewayService;
         this.repository = repository;
+    }
+    
+    @Override
+    public List<Message> list() {
+        return repository.findAll();
     }
     
     @Override
