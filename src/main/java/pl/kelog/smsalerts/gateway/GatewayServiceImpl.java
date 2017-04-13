@@ -1,16 +1,14 @@
-package pl.kelog.smsalerts.sms.gateway;
+package pl.kelog.smsalerts.gateway;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import pl.kelog.smsalerts.sms.MessageDeliveryStatus;
 
-@Service
 class GatewayServiceImpl implements GatewayService {
     
     private final String API_SEND_URL = "https://api.gsmservice.pl/v5/send.php";

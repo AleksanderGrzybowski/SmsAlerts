@@ -1,4 +1,4 @@
-package pl.kelog.smsalerts.common;
+package pl.kelog.smsalerts.validation;
 
 public class FieldError {
     public final String field, message;

@@ -2,8 +2,8 @@ package pl.kelog.smsalerts.sms;
 
 import org.junit.Before;
 import org.junit.Test;
-import pl.kelog.smsalerts.common.ValidationException;
-import pl.kelog.smsalerts.sms.gateway.GatewayService;
+import pl.kelog.smsalerts.validation.ValidationException;
+import pl.kelog.smsalerts.gateway.GatewayService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;

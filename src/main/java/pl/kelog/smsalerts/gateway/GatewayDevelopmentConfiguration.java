@@ -1,4 +1,4 @@
-package pl.kelog.smsalerts.sms.gateway;
+package pl.kelog.smsalerts.gateway;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

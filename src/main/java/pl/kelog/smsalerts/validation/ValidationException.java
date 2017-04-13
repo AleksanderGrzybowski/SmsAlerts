@@ -1,4 +1,4 @@
-package pl.kelog.smsalerts.common;
+package pl.kelog.smsalerts.validation;
 
 import java.util.Collections;
 import java.util.List;

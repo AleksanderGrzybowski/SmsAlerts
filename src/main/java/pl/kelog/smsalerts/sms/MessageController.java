@@ -1,6 +1,5 @@
 package pl.kelog.smsalerts.sms;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,12 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/gateway")
-public class MessageController {
+class MessageController {
     
     private final MessageService service;
     
-    @Autowired
-    MessageController(MessageService service) {
+    public MessageController(MessageService service) {
         this.service = service;
     }
     

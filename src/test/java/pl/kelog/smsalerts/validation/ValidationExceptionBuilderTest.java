@@ -1,4 +1,4 @@
-package pl.kelog.smsalerts.common;
+package pl.kelog.smsalerts.validation;
 
 import org.junit.Test;
 

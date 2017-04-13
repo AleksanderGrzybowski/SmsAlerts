@@ -1,17 +1,13 @@
 package pl.kelog.smsalerts.sms;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import pl.kelog.smsalerts.common.ValidationException;
-import pl.kelog.smsalerts.sms.gateway.GatewayService;
+import pl.kelog.smsalerts.gateway.GatewayService;
+import pl.kelog.smsalerts.validation.ValidationException;
 
-@Service
-public class MessageServiceImpl implements MessageService {
+class MessageServiceImpl implements MessageService {
     
     private final GatewayService gatewayService;
     private final MessageRepository repository;
     
-    @Autowired
     public MessageServiceImpl(GatewayService gatewayService, MessageRepository repository) {
         this.gatewayService = gatewayService;
         this.repository = repository;

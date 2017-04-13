@@ -6,8 +6,8 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import pl.kelog.smsalerts.common.ValidationException;
-import pl.kelog.smsalerts.common.ValidationExceptionHandlerController;
+import pl.kelog.smsalerts.validation.ValidationException;
+import pl.kelog.smsalerts.validation.ValidationExceptionHandlerController;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
