@@ -1,8 +1,7 @@
-package pl.kelog.smsalerts.sms;
+package pl.kelog.smsalerts.sms.gateway;
 
-import org.springframework.stereotype.Service;
+import pl.kelog.smsalerts.sms.MessageDeliveryStatus;
 
-@Service
 public interface GatewayService {
     
     MessageDeliveryStatus send(String recipient, String text);

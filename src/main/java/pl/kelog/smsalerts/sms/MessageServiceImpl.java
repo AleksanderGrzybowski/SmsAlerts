@@ -3,6 +3,7 @@ package pl.kelog.smsalerts.sms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kelog.smsalerts.common.ValidationException;
+import pl.kelog.smsalerts.sms.gateway.GatewayService;
 
 @Service
 public class MessageServiceImpl implements MessageService {
