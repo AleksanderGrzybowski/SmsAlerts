@@ -1,4 +1,4 @@
-package pl.kelog.smsalerts.app;
+package pl.kelog.smsalerts;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
