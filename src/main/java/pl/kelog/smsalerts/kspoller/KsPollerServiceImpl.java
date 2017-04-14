@@ -31,6 +31,17 @@ class KsPollerServiceImpl implements KsPollerService {
     }
     
     @Override
+    public void fillIfEmpty() {
+        if (repository.count() == 0) {
+            log.info("There are no entries, storing all...");
+            downloaderService.downloadFirstPage().forEach(entry ->
+                repository.save(new KsInfoEntry(entry.title, entry.publishedDate.format(FORMATTER)))
+            );
+            log.info("First page of entries stored.");
+        }
+    }
+    
+    @Override
     public void pollAndSend(String pattern) {
         log.info("Polling for new entries...");
         List<KsInfoEntryDto> entries = downloaderService.downloadFirstPage();

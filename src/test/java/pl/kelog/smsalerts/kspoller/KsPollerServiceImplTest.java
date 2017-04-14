@@ -2,6 +2,7 @@ package pl.kelog.smsalerts.kspoller;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import pl.kelog.smsalerts.ksdownloader.KsDownloaderService;
 import pl.kelog.smsalerts.ksparser.KsInfoEntryDto;
 import pl.kelog.smsalerts.sms.MessageService;
@@ -34,6 +35,28 @@ public class KsPollerServiceImplTest {
         this.downloaderService = mock(KsDownloaderService.class);
         this.messageService = mock(MessageService.class);
         this.service = new KsPollerServiceImpl(repository, downloaderService, messageService, recipient);
+    }
+    
+    @Test
+    public void given_empty_datastore_should_fetch_and_store_last_page_of_results() throws Exception {
+        KsInfoEntryDto entry = new KsInfoEntryDto("Wypadek Ustroń Zdrój", LocalDateTime.now());
+        KsInfoEntry entity = new KsInfoEntry(null, entry.title, entry.publishedDate.format(FORMATTER));
+        
+        when(repository.count()).thenReturn(0L);
+        when(downloaderService.downloadFirstPage()).thenReturn(asList(entry));
+        
+        service.fillIfEmpty();
+        
+        verify(repository, times(1)).save(entity);
+    }
+    
+    @Test
+    public void given_nonempty_datastore_should_not_fetch_and_not_fill_any_data() throws Exception {
+        when(repository.count()).thenReturn(1L);
+        
+        service.fillIfEmpty();
+        
+        verify(repository, never()).save(Mockito.any(KsInfoEntry.class));
     }
     
     @Test
