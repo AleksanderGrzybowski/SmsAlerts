@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import pl.kelog.smsalerts.kspoller.KsPollerService;
 import pl.kelog.smsalerts.management.ManagementController;
 import pl.kelog.smsalerts.validation.ValidationExceptionHandlerController;
 
@@ -19,17 +18,15 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 
 public class ManagementControllerTest {
     
-    private KsPollerService ksPollerService;
     private MessageService messageService;
     
     private MockMvc mockMvc;
     
     @Before
     public void setup() {
-        ksPollerService = mock(KsPollerService.class);
         messageService = mock(MessageService.class);
         
-        mockMvc = standaloneSetup(new ManagementController(ksPollerService, messageService))
+        mockMvc = standaloneSetup(new ManagementController(messageService))
                 .setControllerAdvice(new ValidationExceptionHandlerController())
                 .build();
     }

@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import pl.kelog.smsalerts.kspoller.KsPollerService;
 import pl.kelog.smsalerts.sms.Message;
 import pl.kelog.smsalerts.sms.MessageService;
 
@@ -16,11 +15,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/management")
 public class ManagementController {
     
-    private final KsPollerService ksPollerService;
     private final MessageService messageService;
     
-    public ManagementController(KsPollerService ksPollerService, MessageService messageService) {
-        this.ksPollerService = ksPollerService;
+    public ManagementController(MessageService messageService) {
         this.messageService = messageService;
     }
     
@@ -30,13 +27,6 @@ public class ManagementController {
                 messageService.list().stream().map(ListMessageDto::new).collect(Collectors.toList()),
                 HttpStatus.OK
         );
-    }
-    
-    @RequestMapping(value = "/triggerPoll", method = RequestMethod.POST)
-    public ResponseEntity<Void> triggerPoll() {
-        ksPollerService.pollAndSend("Chybie");
-        
-        return new ResponseEntity<>(HttpStatus.OK);
     }
     
     private static class ListMessageDto {

@@ -21,4 +21,9 @@ public class KsPollerConfiguration {
                 System.getenv("RECIPIENT")
         );
     }
+    
+    @Bean
+    public KsPollerScheduledTask ksPollerScheduledTask(KsPollerService ksPollerService) {
+        return new KsPollerScheduledTask(ksPollerService, System.getenv("PATTERN"));
+    }
 }
