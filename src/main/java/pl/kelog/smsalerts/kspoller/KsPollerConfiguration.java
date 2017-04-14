@@ -9,14 +9,16 @@ import pl.kelog.smsalerts.sms.MessageService;
 public class KsPollerConfiguration {
     
     @Bean
-    public KsPollerService ksPollerService(KsInfoEntryRepository repository, KsDownloaderService downloaderService,
-                                           MessageService messageService
+    public KsPollerService ksPollerService(
+            KsInfoEntryRepository repository,
+            KsDownloaderService downloaderService,
+            MessageService messageService
     ) {
         return new KsPollerServiceImpl(
                 repository,
                 downloaderService,
                 messageService,
-                System.getenv("RECIPIENT") 
+                System.getenv("RECIPIENT")
         );
     }
 }

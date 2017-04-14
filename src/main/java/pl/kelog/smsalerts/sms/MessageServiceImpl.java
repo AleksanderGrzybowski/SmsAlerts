@@ -1,10 +1,12 @@
 package pl.kelog.smsalerts.sms;
 
+import org.springframework.stereotype.Service;
 import pl.kelog.smsalerts.gateway.GatewayService;
 import pl.kelog.smsalerts.validation.ValidationException;
 
 import java.util.List;
 
+@Service
 class MessageServiceImpl implements MessageService {
     
     private final GatewayService gatewayService;

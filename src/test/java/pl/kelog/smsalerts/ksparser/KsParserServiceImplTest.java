@@ -11,7 +11,7 @@ import java.util.Scanner;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class KsParserServiceTest {
+public class KsParserServiceImplTest {
     
     KsParserService service;
     

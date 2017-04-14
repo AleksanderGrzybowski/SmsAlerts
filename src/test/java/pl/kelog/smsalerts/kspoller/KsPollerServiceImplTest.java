@@ -9,9 +9,12 @@ import pl.kelog.smsalerts.sms.MessageService;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static pl.kelog.smsalerts.kspoller.KsPollerServiceImpl.FORMATTER;
@@ -40,10 +43,10 @@ public class KsPollerServiceImplTest {
         
         service.pollAndSend("Katowice");
         
-        verify(repository, never()).save(new KsInfoEntry(null, null, null));
+        verify(repository, never()).save(any(KsInfoEntry.class));
         
         verify(downloaderService, times(1)).downloadFirstPage();
-        verify(messageService, never()).sendAndStore(null, null);
+        verify(messageService, never()).sendAndStore(anyString(), anyString());
     }
     
     @Test
@@ -53,11 +56,9 @@ public class KsPollerServiceImplTest {
                 new KsInfoEntryDto("Opóźnienie Katowice", LocalDateTime.now()),
                 new KsInfoEntryDto("Roboty torowe na odcinku Pszczyna-Kobiór", LocalDateTime.now())
         );
-        List<KsInfoEntry> entities = asList(
-                new KsInfoEntry(null, entries.get(0).title, entries.get(0).publishedDate.format(FORMATTER)),
-                new KsInfoEntry(null, entries.get(1).title, entries.get(1).publishedDate.format(FORMATTER)),
-                new KsInfoEntry(null, entries.get(2).title, entries.get(2).publishedDate.format(FORMATTER))
-        );
+        List<KsInfoEntry> entities = entries.stream().map(entry ->
+                new KsInfoEntry(null, entry.title, entry.publishedDate.format(FORMATTER))
+        ).collect(Collectors.toList());
         
         when(downloaderService.downloadFirstPage()).thenReturn(entries);
         
@@ -77,19 +78,22 @@ public class KsPollerServiceImplTest {
                 new KsInfoEntryDto("Opóźnienie Katowice", LocalDateTime.of(2017, Month.APRIL, 13, 23, 0))
         );
         
-        when(repository.countByPublishedDate(LocalDateTime.of(2017, Month.APRIL, 13, 21, 0).format
-                (FORMATTER)))
-                .thenReturn(1);
-        when(repository.countByPublishedDate(LocalDateTime.of(2017, Month.APRIL, 13, 23, 0).format
-                (FORMATTER)))
-                .thenReturn(0);
+        when(repository.countByPublishedDate(
+                LocalDateTime.of(2017, Month.APRIL, 13, 21, 0).format(FORMATTER)
+        )).thenReturn(1);
+        when(repository.countByPublishedDate(
+                LocalDateTime.of(2017, Month.APRIL, 13, 23, 0).format(FORMATTER)
+        )).thenReturn(0);
         
         when(downloaderService.downloadFirstPage()).thenReturn(entries);
         
         service.pollAndSend("Katowice");
         
-        verify(repository, times(1)).save(new KsInfoEntry(null, "Opóźnienie Katowice", LocalDateTime.of(2017, Month
-                .APRIL, 13, 23, 0).format(FORMATTER)));
+        verify(repository, times(1)).save(new KsInfoEntry(
+                null,
+                "Opóźnienie Katowice",
+                LocalDateTime.of(2017, Month.APRIL, 13, 23, 0).format(FORMATTER)
+        ));
         
         verify(downloaderService, times(1)).downloadFirstPage();
         verify(messageService, times(1)).sendAndStore(recipient, "Opóźnienie Katowice");

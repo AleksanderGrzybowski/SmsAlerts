@@ -30,9 +30,10 @@ class KsPollerServiceImpl implements KsPollerService {
     @Override
     public void pollAndSend(String pattern) {
         for (KsInfoEntryDto entryDto : downloaderService.downloadFirstPage()) {
-            if (repository.countByPublishedDate(entryDto.publishedDate.format(FORMATTER)) == 0) {
-                // save it
-                repository.save(new KsInfoEntry(entryDto.title, entryDto.publishedDate.format(FORMATTER)));
+            String formattedDate = entryDto.publishedDate.format(FORMATTER);
+            
+            if (repository.countByPublishedDate(formattedDate) == 0) {
+                repository.save(new KsInfoEntry(entryDto.title, formattedDate));
                 
                 if (entryDto.title.contains(pattern)) {
                     messageService.sendAndStore(recipient, entryDto.title);
