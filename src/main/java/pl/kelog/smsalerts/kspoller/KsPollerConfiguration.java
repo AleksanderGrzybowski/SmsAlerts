@@ -14,16 +14,26 @@ public class KsPollerConfiguration {
             KsDownloaderService downloaderService,
             MessageService messageService
     ) {
+        String recipient = System.getenv("RECIPIENT");
+        if (recipient == null || recipient.length() == 0) {
+            throw new RuntimeException("No recipient phone number provided");
+        }
+        
         return new KsPollerServiceImpl(
                 repository,
                 downloaderService,
                 messageService,
-                System.getenv("RECIPIENT")
+                recipient
         );
     }
     
     @Bean
     public KsPollerScheduledTask ksPollerScheduledTask(KsPollerService ksPollerService) {
-        return new KsPollerScheduledTask(ksPollerService, System.getenv("PATTERN"));
+        String pattern = System.getenv("PATTERN");
+        if (pattern == null || pattern.length() == 0) {
+            throw new RuntimeException("No search pattern provided");
+        }
+        
+        return new KsPollerScheduledTask(ksPollerService, pattern);
     }
 }

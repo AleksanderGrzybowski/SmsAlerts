@@ -13,7 +13,7 @@ class GatewayProductionConfiguration {
         String apiUsername = System.getenv("API_USERNAME");
         String apiPassword = System.getenv("API_PASSWORD");
         
-        if (apiUsername == null || apiPassword == null) {
+        if (apiUsername == null || apiPassword == null || apiUsername.length() == 0 || apiPassword.length() == 0) {
             throw new RuntimeException("Application running in production, but no credentials provided");
         }
         
