@@ -1,5 +1,7 @@
 package pl.kelog.smsalerts.gateway;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,6 +19,8 @@ class GatewayServiceImpl implements GatewayService {
     private final String apiPassword;
     private final String apiUsername;
     
+    private final Logger log = LoggerFactory.getLogger(GatewayServiceImpl.class);
+    
     public GatewayServiceImpl(String apiUsername, String apiPassword) {
         this.apiUsername = apiUsername;
         this.apiPassword = apiPassword;
@@ -24,6 +28,7 @@ class GatewayServiceImpl implements GatewayService {
     
     @Override
     public MessageDeliveryStatus send(String recipient, String text) {
+        log.info("Preparing to send message '" + text + "' to " + recipient);
         // http://stackoverflow.com/questions/38372422/how-to-post-form-data-with-spring-resttemplate
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -34,13 +39,19 @@ class GatewayServiceImpl implements GatewayService {
         bodyParams.add("recipient", recipient);
         bodyParams.add("message", text);
         bodyParams.add("msg_type", SMS_TYPE_ECO);
-    
+        
         ResponseEntity<String> response = new RestTemplate().postForEntity(
                 API_SEND_URL,
                 new HttpEntity<>(bodyParams, headers),
                 String.class
         );
-    
-        return response.getBody().startsWith("OK") ? MessageDeliveryStatus.OK : MessageDeliveryStatus.FAILED;
+        
+        if (response.getBody().startsWith("OK")) {
+            log.info("Message delivered successully to gateway");
+            return MessageDeliveryStatus.OK;
+        } else {
+            log.error("Message delivery failed, " + response.getBody());
+            return MessageDeliveryStatus.FAILED;
+        }
     }
 }

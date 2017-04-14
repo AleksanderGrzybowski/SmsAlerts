@@ -1,5 +1,7 @@
 package pl.kelog.smsalerts.sms;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.kelog.smsalerts.gateway.GatewayService;
 import pl.kelog.smsalerts.validation.ValidationException;
@@ -11,6 +13,8 @@ class MessageServiceImpl implements MessageService {
     
     private final GatewayService gatewayService;
     private final MessageRepository repository;
+    
+    private final Logger log = LoggerFactory.getLogger(MessageServiceImpl.class);
     
     public MessageServiceImpl(GatewayService gatewayService, MessageRepository repository) {
         this.gatewayService = gatewayService;
@@ -39,6 +43,7 @@ class MessageServiceImpl implements MessageService {
         
         MessageDeliveryStatus status = gatewayService.send(recipient, text);
         repository.save(new Message(recipient, text, status));
+        log.info("Stored message log: " + recipient + " " + status);
         return status;
     }
 }

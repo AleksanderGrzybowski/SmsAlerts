@@ -1,10 +1,13 @@
 package pl.kelog.smsalerts.kspoller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.kelog.smsalerts.ksdownloader.KsDownloaderService;
 import pl.kelog.smsalerts.ksparser.KsInfoEntryDto;
 import pl.kelog.smsalerts.sms.MessageService;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 class KsPollerServiceImpl implements KsPollerService {
     
@@ -12,6 +15,7 @@ class KsPollerServiceImpl implements KsPollerService {
     private final KsDownloaderService downloaderService;
     private final MessageService messageService;
     private final String recipient;
+    private final Logger log = LoggerFactory.getLogger(KsPollerServiceImpl.class);
     
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     
@@ -19,8 +23,7 @@ class KsPollerServiceImpl implements KsPollerService {
             KsInfoEntryRepository repository,
             KsDownloaderService downloaderService,
             MessageService messageService,
-            String recipient
-    ) {
+            String recipient) {
         this.repository = repository;
         this.downloaderService = downloaderService;
         this.messageService = messageService;
@@ -29,7 +32,9 @@ class KsPollerServiceImpl implements KsPollerService {
     
     @Override
     public void pollAndSend(String pattern) {
-        for (KsInfoEntryDto entryDto : downloaderService.downloadFirstPage()) {
+        log.info("Polling for new entries...");
+        List<KsInfoEntryDto> entries = downloaderService.downloadFirstPage();
+        for (KsInfoEntryDto entryDto : entries) {
             String formattedDate = entryDto.publishedDate.format(FORMATTER);
             
             if (repository.countByPublishedDate(formattedDate) == 0) {
@@ -40,5 +45,6 @@ class KsPollerServiceImpl implements KsPollerService {
                 }
             }
         }
+        log.info("Polling finished.");
     }
 }
