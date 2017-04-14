@@ -34,10 +34,14 @@ class KsPollerServiceImpl implements KsPollerService {
     public void fillIfEmpty() {
         if (repository.count() == 0) {
             log.info("There are no entries, storing all...");
-            downloaderService.downloadFirstPage().forEach(entry ->
-                repository.save(new KsInfoEntry(entry.title, entry.publishedDate.format(FORMATTER)))
+            downloaderService.downloadFirstPage().forEach(entry -> {
+                        log.info("Storing entry " + entry.publishedDate.format(FORMATTER));
+                        repository.save(new KsInfoEntry(entry.title, entry.publishedDate.format(FORMATTER)));
+                    }
             );
             log.info("First page of entries stored.");
+        } else {
+            log.info("Number of entites exist, not filling datastore");
         }
     }
     
@@ -49,9 +53,11 @@ class KsPollerServiceImpl implements KsPollerService {
             String formattedDate = entryDto.publishedDate.format(FORMATTER);
             
             if (repository.countByPublishedDate(formattedDate) == 0) {
+                log.info("New entry with date" + formattedDate + " found, saving.");
                 repository.save(new KsInfoEntry(entryDto.title, formattedDate));
                 
                 if (entryDto.title.contains(pattern)) {
+                    log.info("Entry " + formattedDate + " contains pattern '" + pattern + "', sending message.");
                     messageService.sendAndStore(recipient, entryDto.title);
                 }
             }

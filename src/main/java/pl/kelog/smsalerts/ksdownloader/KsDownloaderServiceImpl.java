@@ -27,7 +27,7 @@ class KsDownloaderServiceImpl implements KsDownloaderService {
         log.info("Page fetched successfully, size = " + body.length() + " bytes.");
         
         List<KsInfoEntryDto> entries = parserService.parse(body);
-        log.info("Parsed " + entries.size() + " entries.");
+        log.info("Received " + entries.size() + " entries.");
         return entries;
     }
 }

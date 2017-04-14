@@ -10,7 +10,7 @@ class FakeGatewayServiceImpl implements GatewayService {
     
     @Override
     public MessageDeliveryStatus send(String recipient, String text) {
-        log.info("Sending message: " + recipient + " " + text);
+        log.info("Fake sending message: " + recipient + " " + text + "with OK status");
         return MessageDeliveryStatus.OK;
     }
 }
