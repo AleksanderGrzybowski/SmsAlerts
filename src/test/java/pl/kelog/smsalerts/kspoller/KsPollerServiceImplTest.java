@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
@@ -122,4 +123,14 @@ public class KsPollerServiceImplTest {
         verify(messageService, times(1)).sendAndStore(recipient, "Opóźnienie Katowice");
     }
     
+    @Test
+    public void should_properly_match__on_empty_string_should_always_match_any_input() {
+        KsInfoEntryDto entry = new KsInfoEntryDto("Wypadek Ustroń Zdrój", LocalDateTime.of(2017, Month.APRIL, 13, 21, 0));
+    
+        assertThat(service.shouldSendMessage("", entry)).isTrue();
+        assertThat(service.shouldSendMessage("Ustroń", entry)).isTrue();
+        
+        assertThat(service.shouldSendMessage("Wypadek Katowice", entry)).isFalse();
+        
+    }
 }

@@ -30,7 +30,7 @@ public class KsPollerConfiguration {
     @Bean
     public KsPollerScheduledTask ksPollerScheduledTask(KsPollerService ksPollerService) {
         String pattern = System.getenv("PATTERN");
-        if (pattern == null || pattern.length() == 0) {
+        if (pattern == null) {
             throw new RuntimeException("No search pattern provided");
         }
         
