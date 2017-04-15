@@ -11,9 +11,13 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import pl.kelog.smsalerts.sms.MessageDeliveryStatus;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 class GatewayServiceImpl implements GatewayService {
     
     private final String API_SEND_URL = "https://api.gsmservice.pl/v5/send.php";
+    private final String API_BALANCE_URL = "https://api.gsmservice.pl/v5/balance.php";
     private final String SMS_TYPE_ECO = "3";
     
     private final String apiPassword;
@@ -52,6 +56,31 @@ class GatewayServiceImpl implements GatewayService {
         } else {
             log.error("Message delivery failed, " + response.getBody());
             return MessageDeliveryStatus.FAILED;
+        }
+    }
+    
+    @Override
+    public BigDecimal accountBalance() {
+        log.info("Checking account balance...");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        
+        MultiValueMap<String, String> bodyParams = new LinkedMultiValueMap<>();
+        bodyParams.add("login", apiUsername);
+        bodyParams.add("pass", apiPassword);
+        
+        ResponseEntity<String> response = new RestTemplate().postForEntity(
+                API_BALANCE_URL,
+                new HttpEntity<>(bodyParams, headers),
+                String.class
+        );
+        
+        if (response.getBody().startsWith("OK")) {
+            BigDecimal balance = new BigDecimal(response.getBody().split("\\|")[2]).setScale(2, RoundingMode.CEILING);
+            log.info("Provider account balance: " + balance);
+            return balance;
+        } else {
+            throw new RuntimeException("Error checking account balance.");
         }
     }
 }
