@@ -31,7 +31,7 @@ class KsPollerServiceImpl implements KsPollerService {
     }
     
     @Override
-    public void fillIfEmpty() {
+    public void prefetchEntriesIfNonePresent() {
         if (repository.count() == 0) {
             log.info("There are no entries, storing all...");
             downloaderService.downloadFirstPage().forEach(entry -> {
@@ -56,12 +56,16 @@ class KsPollerServiceImpl implements KsPollerService {
                 log.info("New entry with date" + formattedDate + " found, saving.");
                 repository.save(new KsInfoEntry(entryDto.title, formattedDate));
                 
-                if (entryDto.title.contains(pattern)) {
+                if (shouldSendMessage(pattern, entryDto)) {
                     log.info("Entry " + formattedDate + " contains pattern '" + pattern + "', sending message.");
                     messageService.sendAndStore(recipient, entryDto.title);
                 }
             }
         }
         log.info("Polling finished.");
+    }
+    
+    public boolean shouldSendMessage(String pattern, KsInfoEntryDto entryDto) {
+        return entryDto.title.contains(pattern) || entryDto.title.matches(pattern);
     }
 }

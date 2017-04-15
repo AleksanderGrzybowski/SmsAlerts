@@ -45,7 +45,7 @@ public class KsPollerServiceImplTest {
         when(repository.count()).thenReturn(0L);
         when(downloaderService.downloadFirstPage()).thenReturn(asList(entry));
         
-        service.fillIfEmpty();
+        service.prefetchEntriesIfNonePresent();
         
         verify(repository, times(1)).save(entity);
     }
@@ -54,7 +54,7 @@ public class KsPollerServiceImplTest {
     public void given_nonempty_datastore_should_not_fetch_and_not_fill_any_data() throws Exception {
         when(repository.count()).thenReturn(1L);
         
-        service.fillIfEmpty();
+        service.prefetchEntriesIfNonePresent();
         
         verify(repository, never()).save(Mockito.any(KsInfoEntry.class));
     }

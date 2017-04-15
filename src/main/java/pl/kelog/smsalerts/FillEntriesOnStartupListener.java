@@ -18,6 +18,6 @@ public class FillEntriesOnStartupListener implements ApplicationListener<Applica
     
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        service.fillIfEmpty();
+        service.prefetchEntriesIfNonePresent();
     }
 }
