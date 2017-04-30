@@ -22,9 +22,11 @@ public class KsPollerScheduledTask {
     }
     
     @Scheduled(fixedRate = EVERY_15_MINUTES, initialDelay = FIVE_SECONDS)
-    public void reportCurrentTime() {
+    public void pollTask() {
         log.info("Starting poll task...");
+        
         service.pollAndSend(pattern);
+        
         log.info("Polling task finished.");
     }
 }
