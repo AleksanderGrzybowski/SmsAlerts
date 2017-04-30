@@ -49,19 +49,21 @@ class KsPollerServiceImpl implements KsPollerService {
     public void pollAndSend(String pattern) {
         log.info("Polling for new entries...");
         List<KsInfoEntryDto> entries = downloaderService.downloadFirstPage();
+        
         for (KsInfoEntryDto entryDto : entries) {
             String formattedDate = entryDto.publishedDate.format(FORMATTER);
             
             if (repository.countByPublishedDate(formattedDate) == 0) {
-                log.info("New entry with date" + formattedDate + " found, saving.");
+                log.info("New entry with date " + formattedDate + " - " + entryDto.title + " found, saving.");
                 repository.save(new KsInfoEntry(entryDto.title, formattedDate));
                 
                 if (shouldSendMessage(pattern, entryDto)) {
-                    log.info("Entry " + formattedDate + " contains pattern '" + pattern + "', sending message.");
+                    log.info("Entry with date " + formattedDate + " contains pattern '" + pattern + "', sending message.");
                     messageService.sendAndStore(recipient, entryDto.title);
                 }
             }
         }
+        
         log.info("Polling finished.");
     }
     
