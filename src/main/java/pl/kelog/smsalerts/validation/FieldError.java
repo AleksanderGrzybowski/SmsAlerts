@@ -7,4 +7,9 @@ public class FieldError {
         this.field = field;
         this.message = message;
     }
+    
+    @Override
+    public String toString() {
+        return "(" + field + " - " + message + ")";
+    }
 }
