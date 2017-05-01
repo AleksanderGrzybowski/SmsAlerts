@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,6 +38,19 @@ public class KsParserServiceImplTest {
         
         assertThat(entries).hasSize(20);
         assertThat(entries.subList(0, 2)).isEqualTo(twoElements);
+    }
+    
+    @Test
+    public void should_properly_parse_both_single_and_double_digit_date() {
+        DateTimeFormatter formatter = KsParserServiceImpl.getFormatter();
+        
+        assertThat(
+                LocalDateTime.parse("1 maja 2017 8:11", formatter)
+        ).isEqualTo(LocalDateTime.of(2017, Month.MAY, 1, 8, 11));
+        
+        assertThat(
+                LocalDateTime.parse("10 maja 2017 8:11", formatter)
+        ).isEqualTo(LocalDateTime.of(2017, Month.MAY, 10, 8, 11));
     }
     
     private String readResource(String filename) {

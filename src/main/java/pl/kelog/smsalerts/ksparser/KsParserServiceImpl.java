@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.toList;
 @Service
 class KsParserServiceImpl implements KsParserService {
     
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd MMMM yyyy H:mm", new Locale("pl"));
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("d MMMM yyyy H:mm", new Locale("pl"));
     
     private final Logger log = LoggerFactory.getLogger(KsParserServiceImpl.class);
     
@@ -30,5 +30,9 @@ class KsParserServiceImpl implements KsParserService {
         ).collect(toList());
         log.info("Parsing finished, " + entries.size() + " entries");
         return entries;
+    }
+    
+    public static DateTimeFormatter getFormatter() {
+        return FORMATTER;
     }
 }
