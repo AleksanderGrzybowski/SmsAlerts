@@ -10,7 +10,6 @@ import java.util.List;
 @Component
 public class KsPollerScheduledTask {
     
-    private final long EVERY_15_MINUTES = 15 * 60 * 1000;
     private final int FIVE_SECONDS = 5000;
     
     private final KsPollerService service;
@@ -23,7 +22,7 @@ public class KsPollerScheduledTask {
         this.patterns = patterns;
     }
     
-    @Scheduled(fixedRate = EVERY_15_MINUTES, initialDelay = FIVE_SECONDS)
+    @Scheduled(fixedRateString = "${smsalerts.interval}", initialDelay = FIVE_SECONDS)
     public void pollTask() {
         log.info("Starting poll task...");
         
