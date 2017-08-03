@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import pl.kelog.smsalerts.ksdownloader.KsDownloaderService;
 import pl.kelog.smsalerts.sms.MessageService;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 @Configuration
 public class KsPollerConfiguration {
     
@@ -32,14 +36,14 @@ public class KsPollerConfiguration {
     @Bean
     public KsPollerScheduledTask ksPollerScheduledTask(
             KsPollerService ksPollerService,
-            @Value("${smsalerts.pattern}") String pattern
+            @Value("${smsalerts.patterns}") String patterns
     ) {
-        if (pattern == null) {
-            throw new RuntimeException("No search pattern provided");
+        if (patterns == null) {
+            throw new RuntimeException("No search patterns provided");
         } else {
-            log.info("Search pattern: " + pattern);
+            List<String> splitPatterns = asList(patterns.split(","));
+            log.info("Search patterns: " + splitPatterns);
+            return new KsPollerScheduledTask(ksPollerService, splitPatterns);
         }
-        
-        return new KsPollerScheduledTask(ksPollerService, pattern);
     }
 }

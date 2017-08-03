@@ -57,7 +57,7 @@ class KsPollerServiceImplSpec extends Specification {
         repository.countByPublishedDate(_) >> 0
 
         when:
-        service.pollAndSend('Katowice')
+        service.pollAndSend(['Katowice'])
 
         then:
         1 * downloaderService.downloadFirstPage() >> []
@@ -69,6 +69,7 @@ class KsPollerServiceImplSpec extends Specification {
         given:
         List<KsInfoEntryDto> entries = [
                 new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDateTime.now()),
+                new KsInfoEntryDto('Utrudnienia na odcinku Gliwice-Ruda Chebzie', LocalDateTime.now()),
                 new KsInfoEntryDto('Opóźnienie Katowice', LocalDateTime.now()),
                 new KsInfoEntryDto('Roboty torowe na odcinku Pszczyna-Kobiór', LocalDateTime.now())
         ]
@@ -79,13 +80,15 @@ class KsPollerServiceImplSpec extends Specification {
         downloaderService.downloadFirstPage() >> entries
 
         when:
-        service.pollAndSend('Katowice')
+        service.pollAndSend(['Katowice', 'Gliwice'])
 
         then:
         1 * repository.save(entities[0])
         1 * repository.save(entities[1])
         1 * repository.save(entities[2])
+        1 * repository.save(entities[3])
         1 * messageService.sendAndStore(recipient, 'Opóźnienie Katowice')
+        1 * messageService.sendAndStore(recipient, 'Utrudnienia na odcinku Gliwice-Ruda Chebzie')
     }
 
     void 'given nonempty datastore should download all entries and save and send only on new matching entries'() {
@@ -100,7 +103,7 @@ class KsPollerServiceImplSpec extends Specification {
         downloaderService.downloadFirstPage() >> entries
 
         when:
-        service.pollAndSend('Katowice')
+        service.pollAndSend(['Katowice'])
 
         then:
         1 * repository.save(new KsInfoEntry(
@@ -117,8 +120,10 @@ class KsPollerServiceImplSpec extends Specification {
         KsInfoEntryDto entry = new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDateTime.of(2017, Month.APRIL, 13, 21, 0))
 
         then:
-        service.shouldSendMessage('', entry)
-        service.shouldSendMessage('Ustroń', entry)
-        !service.shouldSendMessage('Wypadek Katowice', entry)
+        service.shouldSendMessage([''], entry)
+        service.shouldSendMessage(['Ustroń'], entry)
+        service.shouldSendMessage(['Ustroń', 'Wypadek'], entry)
+        !service.shouldSendMessage(['Wypadek Katowice'], entry)
+        !service.shouldSendMessage(['Katowice', 'Utrudnienia'], entry)
     }
 }

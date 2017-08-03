@@ -46,7 +46,7 @@ class KsPollerServiceImpl implements KsPollerService {
     }
     
     @Override
-    public void pollAndSend(String pattern) {
+    public void pollAndSend(List<String> patterns) {
         log.info("Polling for new entries...");
         List<KsInfoEntryDto> entries = downloaderService.downloadFirstPage();
         
@@ -57,8 +57,8 @@ class KsPollerServiceImpl implements KsPollerService {
                 log.info("New entry with date " + formattedDate + " - " + entryDto.title + " found, saving.");
                 repository.save(new KsInfoEntry(entryDto.title, formattedDate));
                 
-                if (shouldSendMessage(pattern, entryDto)) {
-                    log.info("Entry with date " + formattedDate + " contains pattern '" + pattern + "', sending message.");
+                if (shouldSendMessage(patterns, entryDto)) {
+                    log.info("Entry with date " + formattedDate + " matches patterns '" + patterns + "', sending message.");
                     messageService.sendAndStore(recipient, entryDto.title);
                 }
             }
@@ -67,7 +67,9 @@ class KsPollerServiceImpl implements KsPollerService {
         log.info("Polling finished.");
     }
     
-    public boolean shouldSendMessage(String pattern, KsInfoEntryDto entryDto) {
-        return entryDto.title.contains(pattern) || entryDto.title.matches(pattern);
+    public boolean shouldSendMessage(List<String> patterns, KsInfoEntryDto entryDto) {
+        return patterns.stream().anyMatch(pattern -> 
+                entryDto.title.contains(pattern) || entryDto.title.matches(pattern)
+        );
     }
 }

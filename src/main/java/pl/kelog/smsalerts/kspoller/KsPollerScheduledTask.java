@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class KsPollerScheduledTask {
     
@@ -14,18 +16,18 @@ public class KsPollerScheduledTask {
     private final KsPollerService service;
     
     private final Logger log = LoggerFactory.getLogger(KsPollerScheduledTask.class);
-    private final String pattern;
+    private final List<String> patterns;
     
-    public KsPollerScheduledTask(KsPollerService service, String pattern) {
+    public KsPollerScheduledTask(KsPollerService service, List<String> patterns) {
         this.service = service;
-        this.pattern = pattern;
+        this.patterns = patterns;
     }
     
     @Scheduled(fixedRate = EVERY_15_MINUTES, initialDelay = FIVE_SECONDS)
     public void pollTask() {
         log.info("Starting poll task...");
         
-        service.pollAndSend(pattern);
+        service.pollAndSend(patterns);
         
         log.info("Polling task finished.");
     }
