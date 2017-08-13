@@ -10,7 +10,7 @@ import pl.kelog.smsalerts.gateway.GatewayService;
 
 @Component
 @Log
-public class SendAppStartedSmsListener implements ApplicationListener<ApplicationReadyEvent> {
+class SendAppStartedSmsListener implements ApplicationListener<ApplicationReadyEvent> {
     
     private final GatewayService service;
     

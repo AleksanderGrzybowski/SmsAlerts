@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/management")
-public class ManagementController {
+class ManagementController {
     
     private final MessageService messageService;
     

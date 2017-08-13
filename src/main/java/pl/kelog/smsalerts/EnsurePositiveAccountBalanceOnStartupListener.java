@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Component
 @RequiredArgsConstructor
 @Log
-public class EnsurePositiveAccountBalanceOnStartupListener implements ApplicationListener<ApplicationReadyEvent> {
+class EnsurePositiveAccountBalanceOnStartupListener implements ApplicationListener<ApplicationReadyEvent> {
     
     private final GatewayService service;
     

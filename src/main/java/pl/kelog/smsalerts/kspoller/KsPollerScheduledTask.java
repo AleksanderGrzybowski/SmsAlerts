@@ -8,7 +8,7 @@ import java.util.List;
 
 @Log
 @RequiredArgsConstructor
-public class KsPollerScheduledTask {
+class KsPollerScheduledTask {
     
     private final int FIVE_SECONDS = 5000;
     

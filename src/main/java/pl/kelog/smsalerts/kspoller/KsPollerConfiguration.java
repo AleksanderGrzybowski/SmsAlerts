@@ -13,7 +13,7 @@ import static java.util.Arrays.asList;
 
 @Configuration
 @Log
-public class KsPollerConfiguration {
+class KsPollerConfiguration {
     
     @Bean
     public KsPollerService ksPollerService(

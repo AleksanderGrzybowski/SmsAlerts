@@ -1,8 +1,10 @@
-package pl.kelog.smsalerts.sms
+package pl.kelog.smsalerts.management
 
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import pl.kelog.smsalerts.management.ManagementController
+import pl.kelog.smsalerts.sms.Message
+import pl.kelog.smsalerts.sms.MessageDeliveryStatus
+import pl.kelog.smsalerts.sms.MessageService
 import pl.kelog.smsalerts.validation.ValidationExceptionHandlerController
 import spock.lang.Specification
 

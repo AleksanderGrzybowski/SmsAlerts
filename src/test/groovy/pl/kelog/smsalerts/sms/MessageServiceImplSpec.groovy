@@ -45,7 +45,7 @@ class MessageServiceImplSpec extends Specification {
         (1.._) * repository.findAll() >> expected
     }
 
-    void should_reject_empty_recipient() {
+    void 'should reject empty recipient'() {
         when:
         service.sendAndStore('', 'text')
         
@@ -53,7 +53,7 @@ class MessageServiceImplSpec extends Specification {
         thrown ValidationException
     }
 
-    void should_reject_empty_text() {
+    void 'should reject empty text'() {
         when:
         service.sendAndStore('+123', '')
         
@@ -61,12 +61,11 @@ class MessageServiceImplSpec extends Specification {
         thrown ValidationException
     }
 
-    void should_reject_text_longer_than_160_chars() {
+    void 'should reject text longer than 160 chars'() {
         when:
         service.sendAndStore('+123', 'X' * 161)
         
         then:
         thrown ValidationException
     }
-
-    }
+}
