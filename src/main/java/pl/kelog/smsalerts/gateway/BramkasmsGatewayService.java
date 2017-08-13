@@ -22,8 +22,8 @@ class BramkasmsGatewayService implements GatewayService {
     private final String API_BALANCE_URL = "https://api.gsmservice.pl/v5/balance.php";
     private final String SMS_TYPE_ECO = "3";
     
-    private final String apiPassword;
     private final String apiUsername;
+    private final String apiPassword;
     
     @Override
     public MessageDeliveryStatus send(String recipient, String text) {
