@@ -1,7 +1,6 @@
 package pl.kelog.smsalerts.kspoller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,9 +12,8 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 @Configuration
+@Log
 public class KsPollerConfiguration {
-    
-    private final Logger log = LoggerFactory.getLogger(KsPollerConfiguration.class);
     
     @Bean
     public KsPollerService ksPollerService(

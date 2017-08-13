@@ -1,5 +1,6 @@
 package pl.kelog.smsalerts.management;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,14 +13,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/management")
 public class ManagementController {
     
     private final MessageService messageService;
-    
-    public ManagementController(MessageService messageService) {
-        this.messageService = messageService;
-    }
     
     @RequestMapping(value = "/messages", method = RequestMethod.GET)
     public ResponseEntity<List<ListMessageDto>> list() {

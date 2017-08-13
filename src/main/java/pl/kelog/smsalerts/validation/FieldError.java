@@ -1,15 +1,8 @@
 package pl.kelog.smsalerts.validation;
 
+import lombok.Data;
+
+@Data
 public class FieldError {
     public final String field, message;
-    
-    FieldError(String field, String message) {
-        this.field = field;
-        this.message = message;
-    }
-    
-    @Override
-    public String toString() {
-        return "(" + field + " - " + message + ")";
-    }
 }

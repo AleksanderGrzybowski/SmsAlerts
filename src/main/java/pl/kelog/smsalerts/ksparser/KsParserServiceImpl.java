@@ -1,8 +1,7 @@
 package pl.kelog.smsalerts.ksparser;
 
+import lombok.extern.java.Log;
 import org.jsoup.Jsoup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,11 +12,13 @@ import java.util.Locale;
 import static java.util.stream.Collectors.toList;
 
 @Service
+@Log
 class KsParserServiceImpl implements KsParserService {
     
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("d MMMM yyyy H:mm", new Locale("pl"));
-    
-    private final Logger log = LoggerFactory.getLogger(KsParserServiceImpl.class);
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(
+            "d MMMM yyyy H:mm",
+            new Locale("pl")
+    );
     
     @Override
     public List<KsInfoEntryDto> parse(String content) {

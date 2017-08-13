@@ -1,7 +1,7 @@
 package pl.kelog.smsalerts.gateway;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -14,7 +14,9 @@ import pl.kelog.smsalerts.sms.MessageDeliveryStatus;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-class GatewayServiceImpl implements GatewayService {
+@Log
+@RequiredArgsConstructor
+class BramkasmsGatewayService implements GatewayService {
     
     private final String API_SEND_URL = "https://api.gsmservice.pl/v5/send.php";
     private final String API_BALANCE_URL = "https://api.gsmservice.pl/v5/balance.php";
@@ -22,13 +24,6 @@ class GatewayServiceImpl implements GatewayService {
     
     private final String apiPassword;
     private final String apiUsername;
-    
-    private final Logger log = LoggerFactory.getLogger(GatewayServiceImpl.class);
-    
-    public GatewayServiceImpl(String apiUsername, String apiPassword) {
-        this.apiUsername = apiUsername;
-        this.apiPassword = apiPassword;
-    }
     
     @Override
     public MessageDeliveryStatus send(String recipient, String text) {
@@ -54,7 +49,7 @@ class GatewayServiceImpl implements GatewayService {
             log.info("Message delivered successully to gateway");
             return MessageDeliveryStatus.OK;
         } else {
-            log.error("Message delivery failed, " + response.getBody());
+            log.severe("Message delivery failed, " + response.getBody());
             return MessageDeliveryStatus.FAILED;
         }
     }

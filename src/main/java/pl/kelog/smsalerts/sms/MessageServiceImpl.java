@@ -1,7 +1,7 @@
 package pl.kelog.smsalerts.sms;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 import pl.kelog.smsalerts.gateway.GatewayService;
 import pl.kelog.smsalerts.validation.ValidationException;
@@ -9,17 +9,12 @@ import pl.kelog.smsalerts.validation.ValidationException;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Log
 class MessageServiceImpl implements MessageService {
     
     private final GatewayService gatewayService;
     private final MessageRepository repository;
-    
-    private final Logger log = LoggerFactory.getLogger(MessageServiceImpl.class);
-    
-    public MessageServiceImpl(GatewayService gatewayService, MessageRepository repository) {
-        this.gatewayService = gatewayService;
-        this.repository = repository;
-    }
     
     @Override
     public List<Message> list() {

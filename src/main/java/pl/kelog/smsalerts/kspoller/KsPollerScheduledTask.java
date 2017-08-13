@@ -1,24 +1,20 @@
 package pl.kelog.smsalerts.kspoller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
 
+@Log
+@RequiredArgsConstructor
 public class KsPollerScheduledTask {
     
     private final int FIVE_SECONDS = 5000;
     
     private final KsPollerService service;
     
-    private final Logger log = LoggerFactory.getLogger(KsPollerScheduledTask.class);
     private final List<String> patterns;
-    
-    public KsPollerScheduledTask(KsPollerService service, List<String> patterns) {
-        this.service = service;
-        this.patterns = patterns;
-    }
     
     @Scheduled(fixedRateString = "${smsalerts.interval}", initialDelay = FIVE_SECONDS)
     public void pollTask() {

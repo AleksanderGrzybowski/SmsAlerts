@@ -14,10 +14,11 @@ public class KsInfoEntry {
     
     private String publishedDate;
     
+    @SuppressWarnings("unused")
     public KsInfoEntry() {
     }
     
-    public KsInfoEntry(String title, String publishedDate) {
+    KsInfoEntry(String title, String publishedDate) {
         this.title = title;
         this.publishedDate = publishedDate;
     }

@@ -1,7 +1,6 @@
 package pl.kelog.smsalerts.gateway;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,9 +8,8 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile("production")
+@Log
 class GatewayProductionConfiguration {
-    
-    private final Logger log = LoggerFactory.getLogger(GatewayProductionConfiguration.class);
     
     @Bean
     public GatewayService gatewayServiceImpl(
@@ -25,6 +23,6 @@ class GatewayProductionConfiguration {
                     + apiUsername.length() + ") and password (length " + apiPassword.length() + ")");
         }
         
-        return new GatewayServiceImpl(apiUsername, apiPassword);
+        return new BramkasmsGatewayService(apiUsername, apiPassword);
     }
 }

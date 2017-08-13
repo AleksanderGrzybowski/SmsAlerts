@@ -10,6 +10,6 @@ class GatewayDevelopmentConfiguration {
     
     @Bean
     public GatewayService gatewayServiceImpl() {
-        return new FakeGatewayServiceImpl();
+        return new FakeGatewayService();
     }
 }

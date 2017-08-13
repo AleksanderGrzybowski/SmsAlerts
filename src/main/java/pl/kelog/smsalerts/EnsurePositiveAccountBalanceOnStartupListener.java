@@ -1,8 +1,7 @@
 package pl.kelog.smsalerts;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -11,16 +10,11 @@ import pl.kelog.smsalerts.gateway.GatewayService;
 import java.math.BigDecimal;
 
 @Component
+@RequiredArgsConstructor
+@Log
 public class EnsurePositiveAccountBalanceOnStartupListener implements ApplicationListener<ApplicationReadyEvent> {
     
     private final GatewayService service;
-    
-    private final Logger log = LoggerFactory.getLogger(EnsurePositiveAccountBalanceOnStartupListener.class);
-    
-    @Autowired
-    public EnsurePositiveAccountBalanceOnStartupListener(GatewayService service) {
-        this.service = service;
-    }
     
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {

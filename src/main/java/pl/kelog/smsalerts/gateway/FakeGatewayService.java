@@ -1,14 +1,12 @@
 package pl.kelog.smsalerts.gateway;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.java.Log;
 import pl.kelog.smsalerts.sms.MessageDeliveryStatus;
 
 import java.math.BigDecimal;
 
-class FakeGatewayServiceImpl implements GatewayService {
-    
-    private final Logger log = LoggerFactory.getLogger(FakeGatewayServiceImpl.class);
+@Log
+class FakeGatewayService implements GatewayService {
     
     @Override
     public MessageDeliveryStatus send(String recipient, String text) {

@@ -1,7 +1,7 @@
 package pl.kelog.smsalerts.kspoller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import pl.kelog.smsalerts.ksdownloader.KsDownloaderService;
 import pl.kelog.smsalerts.ksparser.KsInfoEntryDto;
 import pl.kelog.smsalerts.sms.MessageService;
@@ -9,26 +9,16 @@ import pl.kelog.smsalerts.sms.MessageService;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Log
+@RequiredArgsConstructor
 class KsPollerServiceImpl implements KsPollerService {
     
     private final KsInfoEntryRepository repository;
     private final KsDownloaderService downloaderService;
     private final MessageService messageService;
     private final String recipient;
-    private final Logger log = LoggerFactory.getLogger(KsPollerServiceImpl.class);
     
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-    
-    public KsPollerServiceImpl(
-            KsInfoEntryRepository repository,
-            KsDownloaderService downloaderService,
-            MessageService messageService,
-            String recipient) {
-        this.repository = repository;
-        this.downloaderService = downloaderService;
-        this.messageService = messageService;
-        this.recipient = recipient;
-    }
     
     @Override
     public void prefetchEntriesIfNonePresent() {
