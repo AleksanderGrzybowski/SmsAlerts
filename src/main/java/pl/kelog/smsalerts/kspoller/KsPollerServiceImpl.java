@@ -29,9 +29,9 @@ class KsPollerServiceImpl implements KsPollerService {
                         repository.save(new KsInfoEntry(entry.title, entry.publishedDate.format(FORMATTER)));
                     }
             );
-            log.info("First page of entries stored.");
+            log.info("First page of entries stored");
         } else {
-            log.info("Number of entites exist, not filling datastore");
+            log.info("Some entries already exist, not filling datastore");
         }
     }
     
@@ -44,17 +44,17 @@ class KsPollerServiceImpl implements KsPollerService {
             String formattedDate = entryDto.publishedDate.format(FORMATTER);
             
             if (repository.countByPublishedDate(formattedDate) == 0) {
-                log.info("New entry with date " + formattedDate + " - " + entryDto.title + " found, saving.");
+                log.info("New entry with date " + formattedDate + " - " + entryDto.title + " found, saving");
                 repository.save(new KsInfoEntry(entryDto.title, formattedDate));
                 
                 if (shouldSendMessage(patterns, entryDto)) {
-                    log.info("Entry with date " + formattedDate + " matches patterns '" + patterns + "', sending message.");
+                    log.info("Entry with date " + formattedDate + " matches patterns '" + patterns + "', sending message");
                     messageService.sendAndStore(recipient, entryDto.title);
                 }
             }
         }
         
-        log.info("Polling finished.");
+        log.info("Polling finished");
     }
     
     public boolean shouldSendMessage(List<String> patterns, KsInfoEntryDto entryDto) {

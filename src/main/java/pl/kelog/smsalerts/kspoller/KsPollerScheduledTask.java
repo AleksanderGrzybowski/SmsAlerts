@@ -10,18 +10,18 @@ import java.util.List;
 @RequiredArgsConstructor
 class KsPollerScheduledTask {
     
-    private final int FIVE_SECONDS = 5000;
+    private static final int INTERVAL_MS = 5000;
     
     private final KsPollerService service;
     
     private final List<String> patterns;
     
-    @Scheduled(fixedRateString = "${smsalerts.interval}", initialDelay = FIVE_SECONDS)
+    @Scheduled(fixedRateString = "${smsalerts.interval}", initialDelay = INTERVAL_MS)
     public void pollTask() {
         log.info("Starting poll task...");
         
         service.pollAndSend(patterns);
         
-        log.info("Polling task finished.");
+        log.info("Polling task finished");
     }
 }

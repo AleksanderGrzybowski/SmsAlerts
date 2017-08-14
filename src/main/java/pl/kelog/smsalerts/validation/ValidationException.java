@@ -8,7 +8,7 @@ public class ValidationException extends RuntimeException {
     
     public final List<FieldError> errors;
     
-    public ValidationException(List<FieldError> errors) {
+    ValidationException(List<FieldError> errors) {
         super(stringifyErrors(errors));
         this.errors = Collections.unmodifiableList(errors);
     }

@@ -36,7 +36,7 @@ class KsPollerConfiguration {
             KsPollerService ksPollerService,
             @Value("${smsalerts.patterns}") String patterns
     ) {
-        if (patterns == null) {
+        if (patterns == null || patterns.isEmpty()) {
             throw new RuntimeException("No search patterns provided");
         } else {
             List<String> splitPatterns = asList(patterns.split(","));

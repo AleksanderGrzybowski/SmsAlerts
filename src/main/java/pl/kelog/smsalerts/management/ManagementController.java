@@ -32,7 +32,7 @@ class ManagementController {
         public final String recipient, text;
         public final String status;
         
-        public ListMessageDto(Message message) {
+        ListMessageDto(Message message) {
             this.id = message.getId();
             this.recipient = message.getRecipient();
             this.text = message.getText();

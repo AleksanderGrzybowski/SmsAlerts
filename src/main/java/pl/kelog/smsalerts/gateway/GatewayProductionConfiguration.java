@@ -19,8 +19,7 @@ class GatewayProductionConfiguration {
         if (apiUsername == null || apiPassword == null || apiUsername.length() == 0 || apiPassword.length() == 0) {
             throw new RuntimeException("Application running in production, but no credentials provided");
         } else {
-            log.info("Provided api username (length "
-                    + apiUsername.length() + ") and password (length " + apiPassword.length() + ")");
+            log.info("Provided Bramkasms credentials (user:" + apiUsername + ")");
         }
         
         return new BramkasmsGatewayService(apiUsername, apiPassword);

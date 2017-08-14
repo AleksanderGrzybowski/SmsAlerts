@@ -16,11 +16,13 @@ class EnsurePositiveAccountBalanceOnStartupListener implements ApplicationListen
     
     private final GatewayService service;
     
+    private static final BigDecimal THRESHOLD = new BigDecimal("0.20");
+    
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         BigDecimal balance = service.accountBalance();
-        if (balance.equals(BigDecimal.ZERO)) {
-            throw new RuntimeException("Sms provider account balance is 0");
+        if (balance.compareTo(THRESHOLD) < 0) {
+            throw new RuntimeException("Sms provider account balance is below " + THRESHOLD);
         } else {
             log.info("Sms provider account balance: " + balance);
         }
