@@ -16,7 +16,7 @@ public class KsInfoEntryService {
     
     public List<KsInfoEntry> listNewestFirst() {
         return repository.findAll().stream()
-                .sorted(comparing(KsInfoEntry::getPublishedDate).reversed())
+                .sorted(comparing(KsInfoEntry::getPublishedDate))
                 .collect(toList());
     }
 }
