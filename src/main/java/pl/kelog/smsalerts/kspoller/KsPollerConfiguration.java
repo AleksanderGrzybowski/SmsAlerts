@@ -28,7 +28,7 @@ class KsPollerConfiguration {
             log.info("Messages will be sent to " + recipient);
         }
         
-        return new KsPollerServiceImpl(repository, downloaderService, messageService, recipient);
+        return new KsPollerService(repository, downloaderService, messageService, recipient);
     }
     
     @Bean

@@ -8,22 +8,22 @@ import spock.lang.Specification
 import java.time.LocalDateTime
 import java.time.Month
 
-import static pl.kelog.smsalerts.kspoller.KsPollerServiceImpl.FORMATTER
+import static KsPollerService.FORMATTER
 
-class KsPollerServiceImplSpec extends Specification {
+class KsPollerServiceSpec extends Specification {
 
     KsInfoEntryRepository repository
     KsDownloaderService downloaderService
     MessageService messageService
     String recipient = '+123'
 
-    KsPollerServiceImpl service
+    KsPollerService service
 
     void setup() {
         repository = Mock(KsInfoEntryRepository)
         downloaderService = Mock(KsDownloaderService)
         messageService = Mock(MessageService)
-        service = new KsPollerServiceImpl(repository, downloaderService, messageService, recipient)
+        service = new KsPollerService(repository, downloaderService, messageService, recipient)
     }
 
     void 'given empty datastore should fetch and store last page of results'() {

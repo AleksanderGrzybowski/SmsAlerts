@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Profile;
 class GatewayProductionConfiguration {
     
     @Bean
-    public GatewayService gatewayServiceImpl(
+    public GatewayService gatewayService(
             @Value("${smsalerts.apiusername}") String apiUsername,
             @Value("${smsalerts.apipassword}") String apiPassword
     ) {

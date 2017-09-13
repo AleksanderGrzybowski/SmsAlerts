@@ -1,4 +1,4 @@
-package pl.kelog.smsalerts.management;
+package pl.kelog.smsalerts.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +11,7 @@ import static java.util.stream.Collectors.joining;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/info")
-class ManagementController {
+class InfoController {
     
     private final MessageService messageService;
     private final KsInfoEntryService entryService;

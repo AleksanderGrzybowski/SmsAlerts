@@ -6,12 +6,12 @@ import java.time.LocalDateTime
 import java.time.Month
 import java.time.format.DateTimeFormatter
 
-class KsParserServiceImplSpec extends Specification {
+class KsParserServiceSpec extends Specification {
 
     KsParserService service
 
     void setup() {
-        service = new KsParserServiceImpl()
+        service = new KsParserService()
     }
 
     void 'should extract titles and dates from sample page'() {
@@ -36,7 +36,7 @@ class KsParserServiceImplSpec extends Specification {
 
     void 'should properly parse both single and double digit date'() {
         given:
-        DateTimeFormatter formatter = KsParserServiceImpl.getFormatter()
+        DateTimeFormatter formatter = KsParserService.getFormatter()
 
         expect:
         LocalDateTime.parse('1 maja 2017 8:11', formatter) == LocalDateTime.of(2017, Month.MAY, 1, 8, 11)

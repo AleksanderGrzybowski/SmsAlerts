@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 class GatewayDevelopmentConfiguration {
     
     @Bean
-    public GatewayService gatewayServiceImpl() {
+    public GatewayService gatewayService() {
         return new FakeGatewayService();
     }
 }

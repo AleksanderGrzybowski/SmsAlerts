@@ -4,7 +4,7 @@ import pl.kelog.smsalerts.gateway.GatewayService
 import pl.kelog.smsalerts.validation.ValidationException
 import spock.lang.Specification
 
-class MessageServiceImplSpec extends Specification {
+class MessageServiceSpec extends Specification {
 
     MessageService service
 
@@ -14,7 +14,7 @@ class MessageServiceImplSpec extends Specification {
     void setup() {
         gatewayService = Mock(GatewayService)
         repository = Mock(MessageRepository)
-        service = new MessageServiceImpl(gatewayService, repository)
+        service = new MessageService(gatewayService, repository)
     }
 
 
