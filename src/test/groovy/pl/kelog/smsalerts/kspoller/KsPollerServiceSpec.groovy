@@ -122,6 +122,7 @@ class KsPollerServiceSpec extends Specification {
         then:
         service.shouldSendMessage([''], entry)
         service.shouldSendMessage(['Ustroń'], entry)
+        service.shouldSendMessage(['USTROŃ'], entry)
         service.shouldSendMessage(['Ustroń', 'Wypadek'], entry)
         !service.shouldSendMessage(['Wypadek Katowice'], entry)
         !service.shouldSendMessage(['Katowice', 'Utrudnienia'], entry)

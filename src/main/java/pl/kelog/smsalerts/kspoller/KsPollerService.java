@@ -56,8 +56,10 @@ public class KsPollerService {
     }
     
     public boolean shouldSendMessage(List<String> patterns, KsInfoEntryDto entryDto) {
-        return patterns.stream().anyMatch(pattern -> 
-                entryDto.title.contains(pattern) || entryDto.title.matches(pattern)
+        return patterns.stream().map(String::toLowerCase).anyMatch(pattern -> {
+                    String normalizedTitle = entryDto.title.toLowerCase();
+                    return normalizedTitle.contains(pattern) || normalizedTitle.matches(pattern);
+                }
         );
     }
 }
