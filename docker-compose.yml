@@ -1,0 +1,14 @@
+version: '2'
+services:
+  smsalerts:
+    image: smsalerts
+    build: .
+    environment:
+      - SMSALERTS_APIUSERNAME=${SMSALERTS_APIUSERNAME}
+      - SMSALERTS_APIPASSWORD=${SMSALERTS_APIPASSWORD}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - SMSALERTS_RECIPIENT=${SMSALERTS_RECIPIENT}
+      - SMSALERTS_PATTERNS=${SMSALERTS_PATTERNS}
+      - SMSALERTS_INTERVAL=${SMSALERTS_INTERVAL}
+    restart: on-failure
+      
