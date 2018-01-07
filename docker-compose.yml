@@ -3,6 +3,8 @@ services:
   smsalerts:
     image: smsalerts
     build: .
+    ports:
+      - 127.0.0.1:58127:8080
     environment:
       - SMSALERTS_APIUSERNAME=${SMSALERTS_APIUSERNAME}
       - SMSALERTS_APIPASSWORD=${SMSALERTS_APIPASSWORD}
