@@ -10,7 +10,7 @@ import static java.util.stream.Collectors.joining;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/info")
+@RequestMapping("/")
 class InfoController {
     
     private final MessageService messageService;
