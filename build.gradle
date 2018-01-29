@@ -41,4 +41,7 @@ dependencies {
     compile group: 'cglib', name: 'cglib-nodep', version: '3.2.5'
 
     compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+    compile group: 'org.webjars', name: 'bootstrap', version: '3.3.5'
 }
