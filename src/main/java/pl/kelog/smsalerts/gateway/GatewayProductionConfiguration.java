@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import static pl.kelog.smsalerts.Utils.isNullOrEmpty;
+
 @Configuration
 @Profile("production")
 @Log
@@ -16,12 +18,17 @@ class GatewayProductionConfiguration {
             @Value("${smsalerts.apiusername}") String apiUsername,
             @Value("${smsalerts.apipassword}") String apiPassword
     ) {
-        if (apiUsername == null || apiPassword == null || apiUsername.length() == 0 || apiPassword.length() == 0) {
-            throw new RuntimeException("Application running in production, but no credentials provided");
-        } else {
-            log.info("Provided Bramkasms credentials (user:" + apiUsername + ")");
+        if (isNullOrEmpty(apiUsername) || isNullOrEmpty(apiPassword)) {
+            throw new NoGatewayCredentialsProvided();
         }
         
+        log.info("Provided Bramkasms credentials (user:" + apiUsername + ")");
         return new BramkasmsGatewayService(apiUsername, apiPassword);
+    }
+    
+    private static class NoGatewayCredentialsProvided extends RuntimeException {
+        NoGatewayCredentialsProvided() {
+            super("Application running in production, but no credentials provided");
+        }
     }
 }

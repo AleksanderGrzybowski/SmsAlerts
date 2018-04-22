@@ -28,17 +28,9 @@ class BramkasmsGatewayService implements GatewayService {
     @Override
     public MessageDeliveryStatus send(String recipient, String text) {
         log.info("Preparing to send message '" + text + "' to " + recipient);
+        ResponseEntity<String> response = deliverMessageToGateway(recipient, text);
         
-        ResponseEntity<String> response = new RestTemplate().postForEntity(
-                API_SEND_URL,
-                new HttpEntity<>(
-                        prepareBody(recipient, text),
-                        prepareHeaders()
-                ),
-                String.class
-        );
-        
-        if (response.getBody().startsWith("OK")) {
+        if (isGatewaySuccess(response)) {
             log.info("Message delivered successully to gateway");
             return MessageDeliveryStatus.OK;
         } else {
@@ -50,43 +42,68 @@ class BramkasmsGatewayService implements GatewayService {
     @Override
     public BigDecimal accountBalance() {
         log.info("Checking account balance...");
+        ResponseEntity<String> response = checkGatewayBalance();
         
-        HttpHeaders headers = prepareHeaders();
-        
-        MultiValueMap<String, String> bodyParams = new LinkedMultiValueMap<>();
-        bodyParams.add("login", apiUsername);
-        bodyParams.add("pass", apiPassword);
-        
-        ResponseEntity<String> response = new RestTemplate().postForEntity(
-                API_BALANCE_URL,
-                new HttpEntity<>(bodyParams, headers),
-                String.class
-        );
-        
-        if (response.getBody().startsWith("OK")) {
-            BigDecimal balance = new BigDecimal(response.getBody().split("\\|")[2])
-                    .setScale(2, RoundingMode.CEILING);
+        if (isGatewaySuccess(response)) {
+            BigDecimal balance = extractBalanceFromResponse(response);
             log.info("Provider account balance: " + balance);
-            
             return balance;
         } else {
-            throw new RuntimeException("Error checking account balance");
+            throw new GatewayBalanceCheckError();
         }
     }
     
-    private HttpHeaders prepareHeaders() {
+    private ResponseEntity<String> deliverMessageToGateway(String recipient, String text) {
+        return new RestTemplate().postForEntity(
+                API_SEND_URL,
+                new HttpEntity<>(
+                        prepareBodyForSms(recipient, text),
+                        prepareHeaders()
+                ),
+                String.class
+        );
+    }
+    
+    private ResponseEntity<String> checkGatewayBalance() {
+        return new RestTemplate().postForEntity(
+                API_BALANCE_URL,
+                new HttpEntity<>(prepareBodyUserPassword(), prepareHeaders()),
+                String.class
+        );
+    }
+    
+    private static HttpHeaders prepareHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         return headers;
     }
     
-    private MultiValueMap<String, String> prepareBody(String recipient, String text) {
+    private MultiValueMap<String, String> prepareBodyUserPassword() {
         MultiValueMap<String, String> bodyParams = new LinkedMultiValueMap<>();
         bodyParams.add("login", apiUsername);
         bodyParams.add("pass", apiPassword);
+        return bodyParams;
+    }
+    
+    private static BigDecimal extractBalanceFromResponse(ResponseEntity<String> response) {
+        return new BigDecimal(response.getBody().split("\\|")[2]).setScale(2, RoundingMode.CEILING);
+    }
+    
+    private static boolean isGatewaySuccess(ResponseEntity<String> response) {
+        return response.getBody().startsWith("OK");
+    }
+    
+    private MultiValueMap<String, String> prepareBodyForSms(String recipient, String text) {
+        MultiValueMap<String, String> bodyParams = prepareBodyUserPassword();
         bodyParams.add("recipient", recipient);
         bodyParams.add("message", text);
         bodyParams.add("msg_type", SMS_TYPE_ECO);
         return bodyParams;
+    }
+    
+    private static class GatewayBalanceCheckError extends RuntimeException {
+        GatewayBalanceCheckError() {
+            super("Error checking account balance");
+        }
     }
 }

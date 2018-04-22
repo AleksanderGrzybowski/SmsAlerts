@@ -8,14 +8,16 @@ import java.math.BigDecimal;
 @Log
 class FakeGatewayService implements GatewayService {
     
+    private static final String MOCK_ACCOUNT_BALANCE_VALUE = "12.34";
+    
     @Override
     public MessageDeliveryStatus send(String recipient, String text) {
-        log.info("Fake sending message: " + recipient + " " + text + " with OK status");
+        log.info("Faking sending message: " + recipient + " " + text + " with OK status.");
         return MessageDeliveryStatus.OK;
     }
     
     @Override
     public BigDecimal accountBalance() {
-        return new BigDecimal("12.34");
+        return new BigDecimal(MOCK_ACCOUNT_BALANCE_VALUE);
     }
 }

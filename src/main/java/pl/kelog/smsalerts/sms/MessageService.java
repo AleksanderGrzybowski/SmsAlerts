@@ -21,6 +21,16 @@ public class MessageService {
     }
     
     public MessageDeliveryStatus sendAndStore(String recipient, String text) {
+        validate(recipient, text);
+        
+        MessageDeliveryStatus status = gatewayService.send(recipient, text);
+        repository.save(new Message(recipient, text, status));
+        
+        log.info("Stored message log: " + recipient + " " + status);
+        return status;
+    }
+    
+    private static void validate(String recipient, String text) {
         ValidationException.builder()
                 .add(
                         recipient != null && recipient.startsWith("+"),
@@ -33,10 +43,5 @@ public class MessageService {
                         "Text must be between 1 and 160 characters"
                 )
                 .throwIfErrors();
-        
-        MessageDeliveryStatus status = gatewayService.send(recipient, text);
-        repository.save(new Message(recipient, text, status));
-        log.info("Stored message log: " + recipient + " " + status);
-        return status;
     }
 }

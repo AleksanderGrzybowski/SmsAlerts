@@ -22,9 +22,15 @@ class EnsurePositiveAccountBalanceOnStartupListener implements ApplicationListen
     public void onApplicationEvent(ApplicationReadyEvent event) {
         BigDecimal balance = service.accountBalance();
         if (balance.compareTo(THRESHOLD) < 0) {
-            throw new RuntimeException("Sms provider account balance is below " + THRESHOLD);
-        } else {
-            log.info("Sms provider account balance: " + balance);
+            throw new TooLowAccountBalanceError();
+        }
+        
+        log.info("Sms provider account balance: " + balance);
+    }
+    
+    private static class TooLowAccountBalanceError extends RuntimeException {
+        TooLowAccountBalanceError() {
+            super("Sms provider account balance is below " + THRESHOLD);
         }
     }
 }

@@ -1,7 +1,6 @@
 package pl.kelog.smsalerts;
 
 import lombok.extern.java.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
@@ -17,7 +16,6 @@ class SendAppStartedSmsListener implements ApplicationListener<ApplicationReadyE
     private final String recipient;
     private final String commitId;
     
-    @Autowired
     public SendAppStartedSmsListener(
             GatewayService service,
             @Value("${smsalerts.recipient}") String recipient,
@@ -30,8 +28,12 @@ class SendAppStartedSmsListener implements ApplicationListener<ApplicationReadyE
     
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        log.info("Sending app started message");
-        
-        service.send(recipient, "SmsAlerts (revision " + commitId.substring(0, 6) + ") started successfully!");
+        log.info("Sending startup message");
+        service.send(recipient, formatMessage());
+        log.info("Startup message sent.");
+    }
+    
+    private String formatMessage() {
+        return "SmsAlerts (revision " + commitId.substring(0, 6) + ") started successfully!";
     }
 }

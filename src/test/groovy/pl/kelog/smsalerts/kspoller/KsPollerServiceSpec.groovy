@@ -23,11 +23,15 @@ class KsPollerServiceSpec extends Specification {
         repository = Mock(KsInfoEntryRepository)
         downloaderService = Mock(KsDownloaderService)
         messageService = Mock(MessageService)
-        service = new KsPollerService(repository, downloaderService, messageService, recipient)
+    }
+
+    def setupService(List<String> patterns = []) {
+        new KsPollerService(repository, downloaderService, messageService, recipient, patterns)
     }
 
     void 'given empty datastore should fetch and store last page of results'() {
         given:
+        service = setupService()
         KsInfoEntryDto entry = new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDateTime.now())
         KsInfoEntry entity = new KsInfoEntry(null, entry.title, entry.publishedDate.format(FORMATTER))
 
@@ -43,6 +47,7 @@ class KsPollerServiceSpec extends Specification {
 
     void 'given nonempty datastore, should not fetch and not fill any data'() {
         given:
+        service = setupService()
         repository.count() >> 1
 
         when:
@@ -54,10 +59,11 @@ class KsPollerServiceSpec extends Specification {
 
     void 'given empty datastore and empty entries download should do nothing'() {
         given:
+        service = setupService(['Katowice'])
         repository.countByPublishedDate(_) >> 0
 
         when:
-        service.pollAndSend(['Katowice'])
+        service.pollAndSend()
 
         then:
         1 * downloaderService.downloadFirstPage() >> []
@@ -67,6 +73,7 @@ class KsPollerServiceSpec extends Specification {
 
     void 'given empty datastore, should download all entries and send messages on matching patterns'() {
         given:
+        service = setupService(['Katowice', 'Gliwice'])
         List<KsInfoEntryDto> entries = [
                 new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDateTime.now()),
                 new KsInfoEntryDto('Utrudnienia na odcinku Gliwice-Ruda Chebzie', LocalDateTime.now()),
@@ -80,7 +87,7 @@ class KsPollerServiceSpec extends Specification {
         downloaderService.downloadFirstPage() >> entries
 
         when:
-        service.pollAndSend(['Katowice', 'Gliwice'])
+        service.pollAndSend()
 
         then:
         1 * repository.save(entities[0])
@@ -93,6 +100,7 @@ class KsPollerServiceSpec extends Specification {
 
     void 'given nonempty datastore should download all entries and save and send only on new matching entries'() {
         given:
+        service = setupService(['Katowice'])
         List<KsInfoEntryDto> entries = [
                 new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDateTime.of(2017, Month.APRIL, 13, 21, 0)),
                 new KsInfoEntryDto('Opóźnienie Katowice', LocalDateTime.of(2017, Month.APRIL, 13, 23, 0))
@@ -103,7 +111,7 @@ class KsPollerServiceSpec extends Specification {
         downloaderService.downloadFirstPage() >> entries
 
         when:
-        service.pollAndSend(['Katowice'])
+        service.pollAndSend()
 
         then:
         1 * repository.save(new KsInfoEntry(
@@ -117,14 +125,19 @@ class KsPollerServiceSpec extends Specification {
 
     void 'should properly match - on empty string should always match any input'() {
         when:
+        service = setupService(patterns)
         KsInfoEntryDto entry = new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDateTime.of(2017, Month.APRIL, 13, 21, 0))
 
         then:
-        service.shouldSendMessage([''], entry)
-        service.shouldSendMessage(['Ustroń'], entry)
-        service.shouldSendMessage(['USTROŃ'], entry)
-        service.shouldSendMessage(['Ustroń', 'Wypadek'], entry)
-        !service.shouldSendMessage(['Wypadek Katowice'], entry)
-        !service.shouldSendMessage(['Katowice', 'Utrudnienia'], entry)
+        shouldSend == service.shouldSendMessage(entry)
+
+        where:
+        patterns                    | shouldSend
+        ['']                        | true
+        ['Ustroń']                  | true
+        ['USTROŃ']                  | true
+        ['Ustroń', 'Wypadek']       | true
+        ['Wypadek Katowice']        | false
+        ['Katowice', 'Utrudnienia'] | false
     }
 }
