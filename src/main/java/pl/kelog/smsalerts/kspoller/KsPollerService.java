@@ -19,7 +19,7 @@ public class KsPollerService {
     private final String recipient;
     private final List<String> patterns;
     
-    static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+    static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     
     public void prefetchEntriesIfNonePresent() {
         if (repository.count() == 0) {
