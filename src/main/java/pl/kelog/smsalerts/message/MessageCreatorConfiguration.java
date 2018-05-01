@@ -11,7 +11,7 @@ class MessageCreatorConfiguration {
     
     @Bean
     public MessageCreator messageCreator(
-            @Value("${smsalerts.baseUrl:'http://localhost:8080'}") String baseUrl
+            @Value("${smsalerts.baseUrl:http://localhost:8080}") String baseUrl
     ) {
         return new MessageCreator(baseUrl);
     }
