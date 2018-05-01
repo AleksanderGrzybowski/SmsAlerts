@@ -36,7 +36,8 @@ public class KsParserService {
     private static KsInfoEntryDto extractEntry(Element entry) {
         return new KsInfoEntryDto(
                 entry.select("h1").text(),
-                LocalDateTime.parse(entry.select(".entry-date").text(), KS_WEBSITE_DATE_FORMATTER)
+                LocalDateTime.parse(entry.select(".entry-date").text(), KS_WEBSITE_DATE_FORMATTER),
+                entry.select("h1").select("a").attr("href")
         );
     }
     

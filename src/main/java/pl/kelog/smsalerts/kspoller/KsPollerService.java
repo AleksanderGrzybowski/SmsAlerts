@@ -45,7 +45,7 @@ public class KsPollerService {
         
         if (repository.countByPublishedDate(formattedDate) == 0) {
             log.info("New entry with date " + formattedDate + " - " + entryDto.title + " found, saving");
-            repository.save(new KsInfoEntry(entryDto.title, formattedDate));
+            repository.save(new KsInfoEntry(entryDto.title, formattedDate, entryDto.detailsUrl));
             
             if (shouldSendMessage(entryDto)) {
                 log.info("Entry with date " + formattedDate + " matches patterns '" + patterns + "', sending message");
@@ -64,6 +64,6 @@ public class KsPollerService {
     
     private void store(KsInfoEntryDto entry) {
         log.info("Storing entry " + entry.publishedDate.format(FORMATTER));
-        repository.save(new KsInfoEntry(entry.title, entry.publishedDate.format(FORMATTER)));
+        repository.save(new KsInfoEntry(entry.title, entry.publishedDate.format(FORMATTER), entry.detailsUrl));
     }
 }

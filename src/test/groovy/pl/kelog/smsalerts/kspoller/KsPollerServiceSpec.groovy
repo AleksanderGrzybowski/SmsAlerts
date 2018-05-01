@@ -32,8 +32,8 @@ class KsPollerServiceSpec extends Specification {
     void 'given empty datastore should fetch and store last page of results'() {
         given:
         service = setupService()
-        KsInfoEntryDto entry = new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDateTime.now())
-        KsInfoEntry entity = new KsInfoEntry(null, entry.title, entry.publishedDate.format(FORMATTER))
+        KsInfoEntryDto entry = new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDateTime.now(), 'http://detailsurl')
+        KsInfoEntry entity = new KsInfoEntry(null, entry.title, entry.publishedDate.format(FORMATTER), entry.detailsUrl)
 
         repository.count() >> 0L
 
@@ -81,7 +81,7 @@ class KsPollerServiceSpec extends Specification {
                 new KsInfoEntryDto('Roboty torowe na odcinku Pszczyna-Kobiór', LocalDateTime.now())
         ]
         List<KsInfoEntry> entities = entries.collect {
-            new KsInfoEntry(null, it.title, it.publishedDate.format(FORMATTER))
+            new KsInfoEntry(null, it.title, it.publishedDate.format(FORMATTER), '')
         }
 
         downloaderService.downloadFirstPage() >> entries
@@ -117,7 +117,8 @@ class KsPollerServiceSpec extends Specification {
         1 * repository.save(new KsInfoEntry(
                 null,
                 'Opóźnienie Katowice',
-                LocalDateTime.of(2017, Month.APRIL, 13, 23, 0).format(FORMATTER)
+                LocalDateTime.of(2017, Month.APRIL, 13, 23, 0).format(FORMATTER),
+                ''
         ))
 
         1 * messageService.sendAndStore(recipient, 'Opóźnienie Katowice')

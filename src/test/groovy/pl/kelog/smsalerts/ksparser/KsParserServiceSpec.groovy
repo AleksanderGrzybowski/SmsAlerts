@@ -19,11 +19,13 @@ class KsParserServiceSpec extends Specification {
         List<KsInfoEntryDto> twoElements = [
                 new KsInfoEntryDto(
                         'Katowice 15:34 – Tychy Lodowisko 16:01 – opóźniony na odjeździe (delayed on departure) 10 minut',
-                        LocalDateTime.of(2017, Month.APRIL, 13, 15, 55, 0)
+                        LocalDateTime.of(2017, Month.APRIL, 13, 15, 55, 0),
+                        'http://kolejeslaskie.com/katowice-1534-tychy-lodowisko-1601-opozniony-na-odjezdzie-delayed-on-departure-10-minut/'
                 ),
                 new KsInfoEntryDto(
                         'Gliwice 13:45 – Częstochowa 15:52 – opóźniony na odjeździe (delayed on departure) 30 minut',
-                        LocalDateTime.of(2017, Month.APRIL, 13, 13, 51, 0)
+                        LocalDateTime.of(2017, Month.APRIL, 13, 13, 51, 0),
+                        'http://kolejeslaskie.com/gliwice-1345-czestochowa-1552-opozniony-na-odjezdzie-delayed-on-departure-30-minut/'
                 )
         ]
         when:

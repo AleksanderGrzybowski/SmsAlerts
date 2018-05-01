@@ -24,7 +24,11 @@
         </thead>
 
         <tr th:each="entry: ${entries}">
-          <td th:text="${entry.publishedDate}"></td>
+          <td>
+            <a th:href="${entry.detailsUrl}" target="_blank">
+              <span th:text="${entry.publishedDate}" />
+            </a>
+          </td>
           <td th:text="${entry.title}"></td>
         </tr>
       </table>
