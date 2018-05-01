@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.kelog.smsalerts.ksdownloader.KsDownloaderService;
+import pl.kelog.smsalerts.message.MessageCreator;
 import pl.kelog.smsalerts.sms.MessageService;
 
 import java.util.List;
@@ -21,6 +22,7 @@ class KsPollerConfiguration {
             KsInfoEntryRepository repository,
             KsDownloaderService downloaderService,
             MessageService messageService,
+            MessageCreator messageCreator,
             @Value("${smsalerts.recipient}") String recipient,
             @Value("${smsalerts.patterns}") String patterns
     ) {
@@ -35,7 +37,7 @@ class KsPollerConfiguration {
         List<String> splitPatterns = asList(patterns.split(","));
         log.info("Search patterns: " + splitPatterns);
         
-        return new KsPollerService(repository, downloaderService, messageService, recipient, splitPatterns);
+        return new KsPollerService(repository, downloaderService, messageService, messageCreator, recipient, splitPatterns);
     }
     
     @Bean

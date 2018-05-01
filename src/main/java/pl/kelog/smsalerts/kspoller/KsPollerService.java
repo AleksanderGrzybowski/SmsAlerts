@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import pl.kelog.smsalerts.ksdownloader.KsDownloaderService;
 import pl.kelog.smsalerts.ksparser.KsInfoEntryDto;
+import pl.kelog.smsalerts.message.MessageCreator;
 import pl.kelog.smsalerts.sms.MessageService;
 
 import java.time.format.DateTimeFormatter;
@@ -16,6 +17,7 @@ public class KsPollerService {
     private final KsInfoEntryRepository repository;
     private final KsDownloaderService downloaderService;
     private final MessageService messageService;
+    private final MessageCreator messageCreator;
     private final String recipient;
     private final List<String> patterns;
     
@@ -45,11 +47,12 @@ public class KsPollerService {
         
         if (repository.countByPublishedDate(formattedDate) == 0) {
             log.info("New entry with date " + formattedDate + " - " + entryDto.title + " found, saving");
-            repository.save(new KsInfoEntry(entryDto.title, formattedDate, entryDto.detailsUrl));
+            KsInfoEntry newEntry = new KsInfoEntry(entryDto.title, formattedDate, entryDto.detailsUrl);
+            repository.save(newEntry);
             
             if (shouldSendMessage(entryDto)) {
                 log.info("Entry with date " + formattedDate + " matches patterns '" + patterns + "', sending message");
-                messageService.sendAndStore(recipient, entryDto.title);
+                messageService.sendAndStore(recipient, messageCreator.createMessage(newEntry));
             }
         }
     }

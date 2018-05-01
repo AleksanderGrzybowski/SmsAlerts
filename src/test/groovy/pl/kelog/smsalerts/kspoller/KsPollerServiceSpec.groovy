@@ -2,6 +2,7 @@ package pl.kelog.smsalerts.kspoller
 
 import pl.kelog.smsalerts.ksdownloader.KsDownloaderService
 import pl.kelog.smsalerts.ksparser.KsInfoEntryDto
+import pl.kelog.smsalerts.message.MessageCreator
 import pl.kelog.smsalerts.sms.MessageService
 import spock.lang.Specification
 
@@ -15,6 +16,7 @@ class KsPollerServiceSpec extends Specification {
     KsInfoEntryRepository repository
     KsDownloaderService downloaderService
     MessageService messageService
+    MessageCreator messageCreator
     String recipient = '+123'
 
     KsPollerService service
@@ -23,10 +25,13 @@ class KsPollerServiceSpec extends Specification {
         repository = Mock(KsInfoEntryRepository)
         downloaderService = Mock(KsDownloaderService)
         messageService = Mock(MessageService)
+        
+        messageCreator = Mock(MessageCreator)
+        messageCreator.createMessage(_) >> { KsInfoEntry entry -> entry.title }
     }
 
     def setupService(List<String> patterns = []) {
-        new KsPollerService(repository, downloaderService, messageService, recipient, patterns)
+        new KsPollerService(repository, downloaderService, messageService, messageCreator, recipient, patterns)
     }
 
     void 'given empty datastore should fetch and store last page of results'() {
