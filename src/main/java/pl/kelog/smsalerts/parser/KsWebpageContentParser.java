@@ -1,9 +1,10 @@
-package pl.kelog.smsalerts.ksparser;
+package pl.kelog.smsalerts.parser;
 
 import lombok.extern.java.Log;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
+import pl.kelog.smsalerts.dto.KsInfoEntryDto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,7 +15,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @Log
-public class KsParserService {
+public class KsWebpageContentParser {
     
     private static final DateTimeFormatter KS_WEBSITE_DATE_FORMATTER = DateTimeFormatter.ofPattern(
             "d MMMM yyyy H:mm",
@@ -26,7 +27,7 @@ public class KsParserService {
         
         List<KsInfoEntryDto> entries = Jsoup.parse(content)
                 .select("article").stream()
-                .map(KsParserService::extractEntry)
+                .map(KsWebpageContentParser::extractEntry)
                 .collect(toList());
         
         log.info("Parsing finished, " + entries.size() + " entries");

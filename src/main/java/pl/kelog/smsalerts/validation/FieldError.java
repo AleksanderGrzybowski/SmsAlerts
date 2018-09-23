@@ -3,6 +3,6 @@ package pl.kelog.smsalerts.validation;
 import lombok.Data;
 
 @Data
-public class FieldError {
+class FieldError {
     public final String field, message;
 }

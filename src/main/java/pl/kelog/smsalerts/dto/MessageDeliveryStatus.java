@@ -1,4 +1,4 @@
-package pl.kelog.smsalerts.sms;
+package pl.kelog.smsalerts.dto;
 
 public enum MessageDeliveryStatus {
     OK, FAILED

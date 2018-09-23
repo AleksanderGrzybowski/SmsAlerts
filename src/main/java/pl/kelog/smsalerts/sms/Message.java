@@ -1,6 +1,7 @@
 package pl.kelog.smsalerts.sms;
 
 import lombok.Data;
+import pl.kelog.smsalerts.dto.MessageDeliveryStatus;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

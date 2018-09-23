@@ -1,7 +1,7 @@
-package pl.kelog.smsalerts.kspoller
+package pl.kelog.smsalerts.poller
 
-import pl.kelog.smsalerts.ksdownloader.KsDownloaderService
-import pl.kelog.smsalerts.ksparser.KsInfoEntryDto
+import pl.kelog.smsalerts.downloader.KsEntryDownloader
+import pl.kelog.smsalerts.dto.KsInfoEntryDto
 import pl.kelog.smsalerts.message.MessageCreator
 import pl.kelog.smsalerts.sms.MessageService
 import spock.lang.Specification
@@ -9,21 +9,21 @@ import spock.lang.Specification
 import java.time.LocalDateTime
 import java.time.Month
 
-import static KsPollerService.FORMATTER
+import static KsPoller.FORMATTER
 
-class KsPollerServiceSpec extends Specification {
+class KsPollerSpec extends Specification {
 
     KsInfoEntryRepository repository
-    KsDownloaderService downloaderService
+    KsEntryDownloader downloaderService
     MessageService messageService
     MessageCreator messageCreator
     String recipient = '+123'
 
-    KsPollerService service
+    KsPoller service
 
     void setup() {
         repository = Mock(KsInfoEntryRepository)
-        downloaderService = Mock(KsDownloaderService)
+        downloaderService = Mock(KsEntryDownloader)
         messageService = Mock(MessageService)
         
         messageCreator = Mock(MessageCreator)
@@ -31,7 +31,7 @@ class KsPollerServiceSpec extends Specification {
     }
 
     def setupService(List<String> patterns = []) {
-        new KsPollerService(repository, downloaderService, messageService, messageCreator, recipient, patterns)
+        new KsPoller(repository, downloaderService, messageService, messageCreator, recipient, patterns)
     }
 
     void 'given empty datastore should fetch and store last page of results'() {

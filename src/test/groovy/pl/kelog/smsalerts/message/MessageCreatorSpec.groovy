@@ -1,14 +1,14 @@
 package pl.kelog.smsalerts.message
 
-import pl.kelog.smsalerts.kspoller.KsInfoEntry
+import pl.kelog.smsalerts.poller.KsInfoEntry
 import spock.lang.Specification
 
 class MessageCreatorSpec extends Specification {
 
-    MessageCreator service
+    MessageCreator creator
 
     void setup() {
-        service = new MessageCreator('http://baseurl:8080')
+        creator = new MessageCreator('http://baseurl:8080')
     }
 
     def 'should add redirect link to short-titled message, without shortening it at all'() {
@@ -16,7 +16,7 @@ class MessageCreatorSpec extends Specification {
         KsInfoEntry entry = createEntry('short title')
 
         then:
-        service.createMessage(entry) == 'short title - http://baseurl:8080/r/123'
+        creator.createMessage(entry) == 'short title - http://baseurl:8080/r/123'
     }
 
     def 'should shorten the message if needed to put full URL URL and not exceed message length limit'() {
@@ -24,7 +24,7 @@ class MessageCreatorSpec extends Specification {
         KsInfoEntry entry = createEntry('long title' * 2000)
 
         when:
-        String content = service.createMessage(entry)
+        String content = creator.createMessage(entry)
 
         then:
         content.length() == MessageCreator.MESSAGE_LENGTH_LIMIT

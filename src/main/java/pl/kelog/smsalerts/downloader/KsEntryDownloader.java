@@ -1,21 +1,21 @@
-package pl.kelog.smsalerts.ksdownloader;
+package pl.kelog.smsalerts.downloader;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import pl.kelog.smsalerts.ksparser.KsInfoEntryDto;
-import pl.kelog.smsalerts.ksparser.KsParserService;
+import pl.kelog.smsalerts.dto.KsInfoEntryDto;
+import pl.kelog.smsalerts.parser.KsWebpageContentParser;
 
 import java.util.List;
 
 @Service
 @Log
 @RequiredArgsConstructor
-public class KsDownloaderService {
+public class KsEntryDownloader {
     
     private static final String KS_INFO_SITE_URL = "http://kolejeslaskie.com/category/informacje/";
-    private final KsParserService parserService;
+    private final KsWebpageContentParser parserService;
     
     public List<KsInfoEntryDto> downloadFirstPage() {
         log.info("Fetching page...");

@@ -6,7 +6,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import pl.kelog.smsalerts.sms.MessageDeliveryStatus;
+import pl.kelog.smsalerts.dto.MessageDeliveryStatus;
 
 import static pl.kelog.smsalerts.gateway.bramkasms.BramkasmsCommons.isGatewaySuccess;
 import static pl.kelog.smsalerts.gateway.bramkasms.BramkasmsCommons.prepareBodyWithCredentials;

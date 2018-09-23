@@ -1,4 +1,4 @@
-package pl.kelog.smsalerts.kspoller;
+package pl.kelog.smsalerts.poller;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

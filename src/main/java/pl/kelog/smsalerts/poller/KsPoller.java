@@ -1,9 +1,9 @@
-package pl.kelog.smsalerts.kspoller;
+package pl.kelog.smsalerts.poller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import pl.kelog.smsalerts.ksdownloader.KsDownloaderService;
-import pl.kelog.smsalerts.ksparser.KsInfoEntryDto;
+import pl.kelog.smsalerts.downloader.KsEntryDownloader;
+import pl.kelog.smsalerts.dto.KsInfoEntryDto;
 import pl.kelog.smsalerts.message.MessageCreator;
 import pl.kelog.smsalerts.sms.MessageService;
 
@@ -12,10 +12,10 @@ import java.util.List;
 
 @Log
 @RequiredArgsConstructor
-public class KsPollerService {
+public class KsPoller {
     
     private final KsInfoEntryRepository repository;
-    private final KsDownloaderService downloaderService;
+    private final KsEntryDownloader downloaderService;
     private final MessageService messageService;
     private final MessageCreator messageCreator;
     private final String recipient;

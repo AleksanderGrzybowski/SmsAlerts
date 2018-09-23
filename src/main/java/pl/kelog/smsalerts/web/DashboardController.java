@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import pl.kelog.smsalerts.kspoller.KsInfoEntryService;
+import pl.kelog.smsalerts.poller.KsInfoEntryService;
 import pl.kelog.smsalerts.sms.MessageService;
 
 import java.util.Map;

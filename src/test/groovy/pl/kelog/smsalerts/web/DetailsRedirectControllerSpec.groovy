@@ -1,8 +1,8 @@
 package pl.kelog.smsalerts.web
 
 import org.springframework.test.web.servlet.MockMvc
-import pl.kelog.smsalerts.kspoller.KsInfoEntry
-import pl.kelog.smsalerts.kspoller.KsInfoEntryService
+import pl.kelog.smsalerts.poller.KsInfoEntry
+import pl.kelog.smsalerts.poller.KsInfoEntryService
 import spock.lang.Specification
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get

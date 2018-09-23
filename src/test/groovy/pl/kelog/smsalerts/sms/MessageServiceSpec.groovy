@@ -1,5 +1,6 @@
 package pl.kelog.smsalerts.sms
 
+import pl.kelog.smsalerts.dto.MessageDeliveryStatus
 import pl.kelog.smsalerts.gateway.SmsGateway
 import pl.kelog.smsalerts.validation.ValidationException
 import spock.lang.Specification
@@ -17,7 +18,6 @@ class MessageServiceSpec extends Specification {
         service = new MessageService(gatewayService, repository)
     }
 
-
     void 'should send message and store it and return status'() {
         given:
         Message sent = new Message(null, '+123', 'text', MessageDeliveryStatus.OK)
@@ -31,7 +31,6 @@ class MessageServiceSpec extends Specification {
         1 * gatewayService.send('+123', 'text') >> MessageDeliveryStatus.OK
         1 * repository.save(_)
     }
-
 
     void 'should list all messages'() {
         given:

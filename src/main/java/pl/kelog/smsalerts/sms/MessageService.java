@@ -3,6 +3,7 @@ package pl.kelog.smsalerts.sms;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
+import pl.kelog.smsalerts.dto.MessageDeliveryStatus;
 import pl.kelog.smsalerts.gateway.SmsGateway;
 import pl.kelog.smsalerts.validation.ValidationException;
 

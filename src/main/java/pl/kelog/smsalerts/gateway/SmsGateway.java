@@ -1,6 +1,6 @@
 package pl.kelog.smsalerts.gateway;
 
-import pl.kelog.smsalerts.sms.MessageDeliveryStatus;
+import pl.kelog.smsalerts.dto.MessageDeliveryStatus;
 
 import java.math.BigDecimal;
 

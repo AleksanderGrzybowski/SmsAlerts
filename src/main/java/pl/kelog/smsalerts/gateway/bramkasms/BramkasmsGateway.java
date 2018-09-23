@@ -3,7 +3,7 @@ package pl.kelog.smsalerts.gateway.bramkasms;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import pl.kelog.smsalerts.gateway.SmsGateway;
-import pl.kelog.smsalerts.sms.MessageDeliveryStatus;
+import pl.kelog.smsalerts.dto.MessageDeliveryStatus;
 
 import java.math.BigDecimal;
 

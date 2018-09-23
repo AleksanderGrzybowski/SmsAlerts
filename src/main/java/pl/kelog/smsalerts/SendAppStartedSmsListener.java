@@ -11,17 +11,17 @@ import pl.kelog.smsalerts.gateway.SmsGateway;
 @Log
 class SendAppStartedSmsListener implements ApplicationListener<ApplicationReadyEvent> {
     
-    private final SmsGateway service;
+    private final SmsGateway gateway;
     
     private final String recipient;
     private final String commitId;
     
     public SendAppStartedSmsListener(
-            SmsGateway service,
+            SmsGateway gateway,
             @Value("${smsalerts.recipient}") String recipient,
             @Value("${git.commit.id}") String commitId
     ) {
-        this.service = service;
+        this.gateway = gateway;
         this.recipient = recipient;
         this.commitId = commitId;
     }
@@ -29,7 +29,7 @@ class SendAppStartedSmsListener implements ApplicationListener<ApplicationReadyE
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         log.info("Sending startup message");
-        service.send(recipient, formatMessage());
+        gateway.send(recipient, formatMessage());
         log.info("Startup message sent.");
     }
     

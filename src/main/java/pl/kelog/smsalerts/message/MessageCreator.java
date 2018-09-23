@@ -2,7 +2,7 @@ package pl.kelog.smsalerts.message;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.kelog.smsalerts.kspoller.KsInfoEntry;
+import pl.kelog.smsalerts.poller.KsInfoEntry;
 
 @Service
 @RequiredArgsConstructor

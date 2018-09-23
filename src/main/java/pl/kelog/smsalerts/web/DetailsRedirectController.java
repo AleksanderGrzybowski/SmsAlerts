@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import pl.kelog.smsalerts.kspoller.KsInfoEntry;
-import pl.kelog.smsalerts.kspoller.KsInfoEntryService;
+import pl.kelog.smsalerts.poller.KsInfoEntry;
+import pl.kelog.smsalerts.poller.KsInfoEntryService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;

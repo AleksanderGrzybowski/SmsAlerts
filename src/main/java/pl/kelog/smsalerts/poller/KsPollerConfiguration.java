@@ -1,10 +1,10 @@
-package pl.kelog.smsalerts.kspoller;
+package pl.kelog.smsalerts.poller;
 
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.kelog.smsalerts.ksdownloader.KsDownloaderService;
+import pl.kelog.smsalerts.downloader.KsEntryDownloader;
 import pl.kelog.smsalerts.message.MessageCreator;
 import pl.kelog.smsalerts.sms.MessageService;
 
@@ -18,9 +18,9 @@ import static pl.kelog.smsalerts.Utils.isNullOrEmpty;
 class KsPollerConfiguration {
     
     @Bean
-    public KsPollerService ksPollerService(
+    public KsPoller ksPollerService(
             KsInfoEntryRepository repository,
-            KsDownloaderService downloaderService,
+            KsEntryDownloader downloader,
             MessageService messageService,
             MessageCreator messageCreator,
             @Value("${smsalerts.recipient}") String recipient,
@@ -32,19 +32,19 @@ class KsPollerConfiguration {
         log.info("Messages will be sent to " + recipient);
         
         if (isNullOrEmpty(patterns)) {
-            throw new NoSearchPatternsProviced();
+            throw new NoSearchPatternsProvided();
         }
         List<String> splitPatterns = asList(patterns.split(","));
         log.info("Search patterns: " + splitPatterns);
         
-        return new KsPollerService(repository, downloaderService, messageService, messageCreator, recipient, splitPatterns);
+        return new KsPoller(repository, downloader, messageService, messageCreator, recipient, splitPatterns);
     }
     
     @Bean
     public KsPollerScheduledTask ksPollerScheduledTask(
-            KsPollerService ksPollerService
+            KsPoller ksPoller
     ) {
-        return new KsPollerScheduledTask(ksPollerService);
+        return new KsPollerScheduledTask(ksPoller);
     }
     
     private static class NoRecipientPhoneNumberProvidedError extends RuntimeException {
@@ -53,8 +53,8 @@ class KsPollerConfiguration {
         }
     }
     
-    private static class NoSearchPatternsProviced extends RuntimeException {
-        NoSearchPatternsProviced() {
+    private static class NoSearchPatternsProvided extends RuntimeException {
+        NoSearchPatternsProvided() {
             super("No search patterns provided");
         }
     }

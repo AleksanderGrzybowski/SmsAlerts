@@ -1,4 +1,4 @@
-package pl.kelog.smsalerts.ksparser;
+package pl.kelog.smsalerts.dto;
 
 import lombok.Data;
 

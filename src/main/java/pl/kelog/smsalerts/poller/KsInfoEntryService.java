@@ -1,4 +1,4 @@
-package pl.kelog.smsalerts.kspoller;
+package pl.kelog.smsalerts.poller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

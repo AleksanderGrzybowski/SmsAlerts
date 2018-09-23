@@ -1,17 +1,18 @@
-package pl.kelog.smsalerts.ksparser
+package pl.kelog.smsalerts.parser
 
+import pl.kelog.smsalerts.dto.KsInfoEntryDto
 import spock.lang.Specification
 
 import java.time.LocalDateTime
 import java.time.Month
 import java.time.format.DateTimeFormatter
 
-class KsParserServiceSpec extends Specification {
+class KsWebpageContentParserSpec extends Specification {
 
-    KsParserService service
+    KsWebpageContentParser parser
 
     void setup() {
-        service = new KsParserService()
+        parser = new KsWebpageContentParser()
     }
 
     void 'should extract titles and dates from sample page'() {
@@ -29,7 +30,7 @@ class KsParserServiceSpec extends Specification {
                 )
         ]
         when:
-        List<KsInfoEntryDto> entries = service.parse(readResource('1.html'))
+        List<KsInfoEntryDto> entries = parser.parse(readResource('1.html'))
 
         then:
         entries.size() == 20
@@ -38,7 +39,7 @@ class KsParserServiceSpec extends Specification {
 
     void 'should properly parse both single and double digit date'() {
         given:
-        DateTimeFormatter formatter = KsParserService.getFormatter()
+        DateTimeFormatter formatter = KsWebpageContentParser.getFormatter()
 
         expect:
         LocalDateTime.parse('1 maja 2017 8:11', formatter) == LocalDateTime.of(2017, Month.MAY, 1, 8, 11)
