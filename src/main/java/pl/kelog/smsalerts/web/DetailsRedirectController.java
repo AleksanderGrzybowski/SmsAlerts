@@ -15,12 +15,17 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-class DetailsRedirectController {
+public class DetailsRedirectController {
     
     private final KsInfoEntryService entryService;
     
-    @RequestMapping(value = "/r/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Void> redirect(@PathVariable("id") int id, HttpServletResponse response) {
+    public static final String REDIRECT_URL_PREFIX = "/r/";
+    
+    @RequestMapping(value = REDIRECT_URL_PREFIX + "{id}", method = RequestMethod.GET)
+    public ResponseEntity<Void> redirect(
+            @SuppressWarnings("MVCPathVariableInspection") @PathVariable("id") int id,
+            HttpServletResponse response
+    ) {
         Optional<KsInfoEntry> entry = entryService.list().stream()
                 .filter(e -> e.getId() == id)
                 .findFirst();

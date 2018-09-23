@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
+import static pl.kelog.smsalerts.web.DetailsRedirectController.REDIRECT_URL_PREFIX 
 
 class DetailsRedirectControllerSpec extends Specification {
 
@@ -24,14 +25,14 @@ class DetailsRedirectControllerSpec extends Specification {
 
     def 'should redirect correctly for existing entry id'() {
         expect:
-        mockMvc.perform(get("/r/${entry.id}"))
+        mockMvc.perform(get("${REDIRECT_URL_PREFIX}${entry.id}"))
                 .andExpect(status().isTemporaryRedirect())
                 .andExpect(header().string('Location', entry.detailsUrl))
     }
 
     def 'should fail with 404 for nonexisting entry id'() {
         expect:
-        mockMvc.perform(get("/r/${entry.id + 1}"))
+        mockMvc.perform(get("${REDIRECT_URL_PREFIX}${entry.id + 1}"))
                 .andExpect(status().isNotFound())
     }
 }

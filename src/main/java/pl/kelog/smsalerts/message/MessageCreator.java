@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.kelog.smsalerts.poller.KsInfoEntry;
 
+import static pl.kelog.smsalerts.web.DetailsRedirectController.REDIRECT_URL_PREFIX;
+
 @Service
 @RequiredArgsConstructor
 public class MessageCreator {
@@ -18,7 +20,7 @@ public class MessageCreator {
     }
     
     private String getUrl(KsInfoEntry entry) {
-        return baseUrl + "/r/" + entry.getId();
+        return baseUrl + REDIRECT_URL_PREFIX + entry.getId();
     }
     
     private String shortenTitleIfNeeded(KsInfoEntry entry) {
