@@ -3,7 +3,7 @@ package pl.kelog.smsalerts.sms;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
-import pl.kelog.smsalerts.gateway.GatewayService;
+import pl.kelog.smsalerts.gateway.SmsGateway;
 import pl.kelog.smsalerts.validation.ValidationException;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 @Log
 public class MessageService {
     
-    private final GatewayService gatewayService;
+    private final SmsGateway smsGateway;
     private final MessageRepository repository;
     
     public List<Message> list() {
@@ -23,7 +23,7 @@ public class MessageService {
     public MessageDeliveryStatus sendAndStore(String recipient, String text) {
         validate(recipient, text);
         
-        MessageDeliveryStatus status = gatewayService.send(recipient, text);
+        MessageDeliveryStatus status = smsGateway.send(recipient, text);
         repository.save(new Message(recipient, text, status));
         
         log.info("Stored message log: " + recipient + " " + status);

@@ -5,19 +5,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-import pl.kelog.smsalerts.gateway.GatewayService;
+import pl.kelog.smsalerts.gateway.SmsGateway;
 
 @Component
 @Log
 class SendAppStartedSmsListener implements ApplicationListener<ApplicationReadyEvent> {
     
-    private final GatewayService service;
+    private final SmsGateway service;
     
     private final String recipient;
     private final String commitId;
     
     public SendAppStartedSmsListener(
-            GatewayService service,
+            SmsGateway service,
             @Value("${smsalerts.recipient}") String recipient,
             @Value("${git.commit.id}") String commitId
     ) {

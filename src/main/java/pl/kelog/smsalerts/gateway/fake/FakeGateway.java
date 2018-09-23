@@ -1,12 +1,13 @@
-package pl.kelog.smsalerts.gateway;
+package pl.kelog.smsalerts.gateway.fake;
 
 import lombok.extern.java.Log;
+import pl.kelog.smsalerts.gateway.SmsGateway;
 import pl.kelog.smsalerts.sms.MessageDeliveryStatus;
 
 import java.math.BigDecimal;
 
 @Log
-class FakeGatewayService implements GatewayService {
+public class FakeGateway implements SmsGateway {
     
     private static final String MOCK_ACCOUNT_BALANCE_VALUE = "12.34";
     

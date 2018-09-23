@@ -1,6 +1,6 @@
 package pl.kelog.smsalerts.sms
 
-import pl.kelog.smsalerts.gateway.GatewayService
+import pl.kelog.smsalerts.gateway.SmsGateway
 import pl.kelog.smsalerts.validation.ValidationException
 import spock.lang.Specification
 
@@ -8,11 +8,11 @@ class MessageServiceSpec extends Specification {
 
     MessageService service
 
-    GatewayService gatewayService
+    SmsGateway gatewayService
     MessageRepository repository
 
     void setup() {
-        gatewayService = Mock(GatewayService)
+        gatewayService = Mock(SmsGateway)
         repository = Mock(MessageRepository)
         service = new MessageService(gatewayService, repository)
     }

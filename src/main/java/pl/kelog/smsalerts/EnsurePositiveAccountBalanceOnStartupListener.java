@@ -5,7 +5,7 @@ import lombok.extern.java.Log;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-import pl.kelog.smsalerts.gateway.GatewayService;
+import pl.kelog.smsalerts.gateway.SmsGateway;
 
 import java.math.BigDecimal;
 
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Log
 class EnsurePositiveAccountBalanceOnStartupListener implements ApplicationListener<ApplicationReadyEvent> {
     
-    private final GatewayService service;
+    private final SmsGateway service;
     
     private static final BigDecimal THRESHOLD = new BigDecimal("0.20");
     
