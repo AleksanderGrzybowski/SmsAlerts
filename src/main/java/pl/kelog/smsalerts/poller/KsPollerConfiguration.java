@@ -11,7 +11,7 @@ import pl.kelog.smsalerts.sms.MessageService;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static pl.kelog.smsalerts.Utils.isNullOrEmpty;
+import static pl.kelog.smsalerts.Utils.assertPresent;
 
 @Configuration
 @Log
@@ -26,14 +26,10 @@ class KsPollerConfiguration {
             @Value("${smsalerts.recipient}") String recipient,
             @Value("${smsalerts.patterns}") String patterns
     ) {
-        if (isNullOrEmpty(recipient)) {
-            throw new NoRecipientPhoneNumberProvidedError();
-        }
+        assertPresent(recipient, NoRecipientPhoneNumberProvidedError::new);
         log.info("Messages will be sent to " + recipient);
         
-        if (isNullOrEmpty(patterns)) {
-            throw new NoSearchPatternsProvided();
-        }
+        assertPresent(patterns, NoSearchPatternsProvided::new);
         List<String> splitPatterns = asList(patterns.split(","));
         log.info("Search patterns: " + splitPatterns);
         

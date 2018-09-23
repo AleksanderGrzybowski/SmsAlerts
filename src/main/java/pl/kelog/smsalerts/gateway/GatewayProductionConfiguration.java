@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import pl.kelog.smsalerts.gateway.bramkasms.BramkasmsConfiguration;
 
-import static pl.kelog.smsalerts.Utils.isNullOrEmpty;
+import static java.util.Arrays.asList;
+import static pl.kelog.smsalerts.Utils.assertPresent;
 
 @Configuration
 @Profile("production")
@@ -19,9 +20,7 @@ class GatewayProductionConfiguration {
             @Value("${smsalerts.apiusername}") String apiUsername,
             @Value("${smsalerts.apipassword}") String apiPassword
     ) {
-        if (isNullOrEmpty(apiUsername) || isNullOrEmpty(apiPassword)) {
-            throw new NoGatewayCredentialsProvided();
-        }
+        assertPresent(asList(apiUsername, apiPassword), NoGatewayCredentialsProvided::new);
         
         log.info("Provided BramkaSms credentials (user:" + apiUsername + ")");
         return new BramkasmsConfiguration().smsGateway(apiUsername, apiPassword);

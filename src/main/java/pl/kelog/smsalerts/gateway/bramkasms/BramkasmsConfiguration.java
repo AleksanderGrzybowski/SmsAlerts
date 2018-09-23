@@ -3,15 +3,14 @@ package pl.kelog.smsalerts.gateway.bramkasms;
 import lombok.extern.java.Log;
 import pl.kelog.smsalerts.gateway.SmsGateway;
 
-import static pl.kelog.smsalerts.Utils.isNullOrEmpty;
+import static java.util.Arrays.asList;
+import static pl.kelog.smsalerts.Utils.assertPresent;
 
 @Log
 public class BramkasmsConfiguration {
     
     public SmsGateway smsGateway(String apiUsername, String apiPassword) {
-        if (isNullOrEmpty(apiUsername) || isNullOrEmpty(apiPassword)) {
-            throw new NoGatewayCredentialsProvided();
-        }
+        assertPresent(asList(apiUsername, apiPassword), NoGatewayCredentialsProvided::new);
         
         log.info("Provided Bramkasms credentials (user: " + apiUsername + ")");
         BramkasmsCredentials credentials = new BramkasmsCredentials(apiUsername, apiPassword);
