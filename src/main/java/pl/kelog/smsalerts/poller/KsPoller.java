@@ -27,9 +27,9 @@ public class KsPoller {
         if (repository.count() == 0) {
             log.info("There are no entries, storing all...");
             downloaderService.downloadFirstPage().forEach(this::store);
-            log.info("First page of entries stored");
+            log.info("First page of entries stored.");
         } else {
-            log.info("Some entries already exist, not filling datastore");
+            log.info("Some entries already exist, not filling datastore.");
         }
     }
     
@@ -39,7 +39,7 @@ public class KsPoller {
         List<KsInfoEntryDto> entries = downloaderService.downloadFirstPage();
         entries.forEach(this::processMessage);
         
-        log.info("Polling finished");
+        log.info("Polling finished.");
     }
     
     private void processMessage(KsInfoEntryDto entryDto) {
@@ -51,7 +51,7 @@ public class KsPoller {
             repository.save(newEntry);
             
             if (shouldSendMessage(entryDto)) {
-                log.info("Entry with date " + formattedDate + " matches patterns '" + patterns + "', sending message");
+                log.info("Entry with date " + formattedDate + " matches patterns '" + patterns + "', sending message...");
                 messageService.sendAndStore(recipient, messageCreator.createMessage(newEntry));
             }
         }

@@ -16,16 +16,16 @@ public class MessageCreator {
     private final String baseUrl;
     
     public String createMessage(KsInfoEntry entry) {
-        return shortenTitleIfNeeded(entry) + SEPARATOR + getUrl(entry);
+        return shortenTitleIfNeeded(entry) + SEPARATOR + createRedirectUrl(entry);
     }
     
-    private String getUrl(KsInfoEntry entry) {
+    private String createRedirectUrl(KsInfoEntry entry) {
         return baseUrl + REDIRECT_URL_PREFIX + entry.getId();
     }
     
     private String shortenTitleIfNeeded(KsInfoEntry entry) {
         String title = entry.getTitle();
-        int sumLength = String.join(title, SEPARATOR, getUrl(entry)).length();
+        int sumLength = String.join(title, SEPARATOR, createRedirectUrl(entry)).length();
         
         if (sumLength > MESSAGE_LENGTH_LIMIT) {
             return title.substring(0, title.length() - (sumLength - MESSAGE_LENGTH_LIMIT));

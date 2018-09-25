@@ -23,6 +23,6 @@ class KsPollerScheduledTask {
         
         poller.pollAndSend();
         
-        log.info("Polling task finished");
+        log.info("Polling task finished.");
     }
 }

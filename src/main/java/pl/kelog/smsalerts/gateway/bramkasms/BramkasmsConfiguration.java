@@ -12,7 +12,7 @@ public class BramkasmsConfiguration {
     public SmsGateway smsGateway(String apiUsername, String apiPassword) {
         assertPresent(asList(apiUsername, apiPassword), NoGatewayCredentialsProvided::new);
         
-        log.info("Provided Bramkasms credentials (user: " + apiUsername + ")");
+        log.info("Provided Bramkasms credentials (user: " + apiUsername + ").");
         BramkasmsCredentials credentials = new BramkasmsCredentials(apiUsername, apiPassword);
         BramkasmsBalanceChecker balanceChecker = new BramkasmsBalanceChecker(credentials);
         BramkasmsSender sender = new BramkasmsSender(credentials);

@@ -22,7 +22,7 @@ class GatewayProductionConfiguration {
     ) {
         assertPresent(asList(apiUsername, apiPassword), NoGatewayCredentialsProvided::new);
         
-        log.info("Provided BramkaSms credentials (user:" + apiUsername + ")");
+        log.info("Provided BramkaSms credentials (user:" + apiUsername + ").");
         return new BramkasmsConfiguration().smsGateway(apiUsername, apiPassword);
     }
     
