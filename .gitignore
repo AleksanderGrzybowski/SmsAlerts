@@ -27,3 +27,6 @@ nbdist/
 .nb-gradle/
 
 .env
+
+frontend/node_modules
+frontend/dist
