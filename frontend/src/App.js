@@ -15,12 +15,18 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {data: {entries: []}};
+    this.state = {
+      entries: [], messages: [],
+      selectedMenuItem: 'alerts'
+    };
   }
 
   componentDidMount() {
-    axios.get("/api/data").then(({data}) => this.setState({data}));
+    axios.get("/api/data")
+      .then(({data}) => this.setState({entries: data.entries, messages: data.messages}));
   }
+
+  onMenuItemClick = selectedMenuItem => this.setState({selectedMenuItem});
 
   render() {
     return (
@@ -42,11 +48,14 @@ class App extends Component {
 
         <Grid container>
           <Grid item xs={3}>
-            <Menu/>
+            <Menu
+              selectedMenuItem={this.state.selectedMenuItem}
+              onMenuItemClick={this.onMenuItemClick}
+            />
           </Grid>
 
           <Grid item xs={8}>
-            <SimpleTable entries={this.state.data.entries}/>
+            <SimpleTable entries={this.state.entries}/>
           </Grid>
         </Grid>
       </div>

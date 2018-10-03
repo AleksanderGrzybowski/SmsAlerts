@@ -1,10 +1,8 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
 import EmailIcon from '@material-ui/icons/Email';
 import WarningIcon from '@material-ui/icons/Warning';
 import InfoIcon from '@material-ui/icons/Info';
@@ -19,33 +17,27 @@ const styles = theme => ({
 
 function Menu(props) {
   const {classes} = props;
+
+  const makeMenuItem = (name, text, icon) => {
+    return (
+      <ListItem
+        button
+        selected={props.selectedMenuItem === name}
+        onClick={() => props.onMenuItemClick(name)}
+      >
+        <ListItemIcon>
+          {icon}
+        </ListItemIcon>
+        <ListItemText primary={text}/>
+      </ListItem>
+    );
+  };
+
   return (
     <div className={classes.root}>
-      <List component="nav">
-        <ListItem button>
-          <ListItemIcon>
-            <WarningIcon/>
-          </ListItemIcon>
-          <ListItemText primary="Last alerts"/>
-        </ListItem>
-
-        <ListItem button>
-          <ListItemIcon>
-            <EmailIcon/>
-          </ListItemIcon>
-          <ListItemText primary="Sent messages"/>
-        </ListItem>
-
-        <Divider/>
-
-        <ListItem button>
-          <ListItemIcon>
-            <InfoIcon/>
-          </ListItemIcon>
-          <ListItemText primary="About"/>
-        </ListItem>
-
-      </List>
+      {makeMenuItem('alerts', 'Last alerts', <WarningIcon/>)}
+      {makeMenuItem('messages', 'Sent messages', <EmailIcon/>)}
+      {makeMenuItem('about', 'About', <InfoIcon/>)}
     </div>
   );
 }
