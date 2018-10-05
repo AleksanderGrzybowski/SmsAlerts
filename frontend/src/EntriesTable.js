@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -19,10 +18,9 @@ const styles = theme => ({
   },
 });
 
-function EntriesTable(props) {
-  const {classes} = props;
+function EntriesTable({classes, entries}) {
 
-  const rows = props.entries.map(entry =>
+  const rows = entries.map(entry =>
     <TableRow key={entry.id}>
       <TableCell component="th" scope="row">
         {entry.publishedDate}
@@ -47,9 +45,5 @@ function EntriesTable(props) {
     </Paper>
   );
 }
-
-EntriesTable.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles)(EntriesTable);
