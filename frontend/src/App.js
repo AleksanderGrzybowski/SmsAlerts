@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios';
-import AppBar from '@material-ui/core/AppBar/AppBar';
-import Toolbar from '@material-ui/core/Toolbar/Toolbar';
-import Typography from '@material-ui/core/Typography/Typography';
 import Grid from '@material-ui/core/Grid/Grid';
 import Menu from './Menu';
-import SimpleTable from './EntriesTable';
-import TrainIcon from '@material-ui/icons/Train';
-import IconButton from '@material-ui/core/IconButton/IconButton';
+import EntriesTable from './EntriesTable';
+import MessagesTable from './MessagesTable';
+import AppToolbar from './static/AppToolbar';
 
 class App extends Component {
 
@@ -28,21 +25,32 @@ class App extends Component {
 
   onMenuItemClick = selectedMenuItem => this.setState({selectedMenuItem});
 
+  currentView = () => {
+    let selectedView;
+    switch (this.state.selectedMenuItem) {
+      case 'alerts':
+        selectedView = <EntriesTable entries={this.state.entries}/>;
+        break;
+      case 'messages':
+        selectedView = <MessagesTable messages={this.state.messages}/>;
+        break;
+      case 'about':
+        selectedView = <p>About</p>;
+        break;
+      default:
+        selectedView = <p>Not yet implemented</p>;
+    }
+    return selectedView;
+  };
+
   render() {
+    let selectedView = this.currentView();
+
     return (
       <div className="App">
         <Grid container>
           <Grid item xs={12}>
-            <AppBar position="static">
-              <Toolbar>
-                <IconButton color="inherit" aria-label="Menu">
-                  <TrainIcon/>
-                </IconButton>
-                <Typography variant="title" color="inherit">
-                  SmsAlerts
-                </Typography>
-              </Toolbar>
-            </AppBar>
+            <AppToolbar/>
           </Grid>
         </Grid>
 
@@ -55,7 +63,7 @@ class App extends Component {
           </Grid>
 
           <Grid item xs={8}>
-            <SimpleTable entries={this.state.entries}/>
+            {selectedView}
           </Grid>
         </Grid>
       </div>
