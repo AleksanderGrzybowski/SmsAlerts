@@ -8,6 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import Spinner from './static/Spinner';
+import { fetchMessages } from './api';
 
 const styles = theme => ({
   root: {
@@ -30,7 +31,7 @@ class MessagesTable extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/messages')
+    fetchMessages()
       .then(({data}) => this.setState({loaded: true, messages: data}));
   }
 

@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination/TablePagination';
 import axios from 'axios';
 import Spinner from './static/Spinner';
+import { fetchAlerts, fetchMessages } from './api';
 
 const styles = theme => ({
   root: {
@@ -35,7 +36,7 @@ class EntriesTable extends Component {
     this.fetchData(0);
   }
 
-  fetchData = (page) => axios.get(`/api/alerts?size=${pageSize}&page=${page}`)
+  fetchData = (page) => fetchAlerts(page, pageSize)
     .then(({data}) => this.setState({loaded: true, currentPage: page, entries: data}));
 
   handlePageChange = (_, page) => this.fetchData(page);

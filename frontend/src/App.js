@@ -7,9 +7,9 @@ import MessagesTable from './MessagesTable';
 import Menu from './Menu';
 import Spinner from './static/Spinner';
 import ServerError from './static/ServerError';
-import axios from 'axios';
 import About from './static/About';
 import AppToolbar from './static/AppToolbar';
+import { healthcheck } from './api';
 
 const drawerWidth = 240;
 
@@ -50,7 +50,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get("/health")
+    healthcheck()
       .then(() => this.setState({backendStatus: 'ok'}))
       .catch(() => this.setState({backendStatus: 'error'}))
   }
@@ -58,8 +58,6 @@ class App extends Component {
   onMenuItemClick = selectedMenuItem => this.setState({selectedMenuItem});
 
   currentView = () => {
-    let selectedView;
-
     if (this.state.backendStatus === 'pending') {
       return <Spinner/>;
     } else if (this.state.backendStatus === 'error') {
@@ -68,24 +66,19 @@ class App extends Component {
 
     switch (this.state.selectedMenuItem) {
       case 'alerts':
-        selectedView = <EntriesTable/>;
-        break;
+        return <EntriesTable/>;
       case 'messages':
-        selectedView = <MessagesTable/>;
-        break;
+        return <MessagesTable/>;
       case 'about':
-        selectedView = <About/>;
-        break;
+        return <About/>;
       default:
-        selectedView = <p>Not yet implemented</p>;
+        return <p>Not yet implemented</p>;
     }
-    return selectedView;
   };
 
   render() {
     const {classes} = this.props;
 
-    let selectedView = this.currentView();
     return (
       <div className={classes.root}>
         <AppToolbar/>
@@ -99,11 +92,12 @@ class App extends Component {
           <List>
             <Menu
               selectedMenuItem={this.state.selectedMenuItem}
-              onMenuItemClick={this.onMenuItemClick}/>
+              onMenuItemClick={this.onMenuItemClick}
+            />
           </List>
         </Drawer>
         <main className={classes.content} style={{marginTop: 50}}>
-          {selectedView}
+          {this.currentView()}
         </main>
       </div>
     );
