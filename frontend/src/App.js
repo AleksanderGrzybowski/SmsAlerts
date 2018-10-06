@@ -14,6 +14,7 @@ import Menu from './Menu';
 import Spinner from './static/Spinner';
 import ServerError from './static/ServerError';
 import axios from 'axios';
+import About from './static/About';
 
 const drawerWidth = 240;
 
@@ -78,7 +79,7 @@ class App extends Component {
         selectedView = <MessagesTable/>;
         break;
       case 'about':
-        selectedView = <p>About</p>;
+        selectedView = <About/>;
         break;
       default:
         selectedView = <p>Not yet implemented</p>;
