@@ -6,6 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import EmailIcon from '@material-ui/icons/Email';
 import WarningIcon from '@material-ui/icons/Warning';
 import InfoIcon from '@material-ui/icons/Info';
+import Divider from '@material-ui/core/Divider/Divider';
 
 const styles = theme => ({
   root: {
@@ -34,11 +35,12 @@ function Menu(props) {
   };
 
   return (
-    <div className={classes.root}>
-      {makeMenuItem('alerts', 'Last alerts', <WarningIcon/>)}
-      {makeMenuItem('messages', 'Sent messages', <EmailIcon/>)}
-      {makeMenuItem('about', 'About', <InfoIcon/>)}
-    </div>
+   [
+      makeMenuItem('alerts', 'Last alerts', <WarningIcon/>),
+      makeMenuItem('messages', 'Sent messages', <EmailIcon/>),
+      <Divider/>,
+      makeMenuItem('about', 'About', <InfoIcon/>),
+   ]
   );
 }
 
