@@ -11,6 +11,9 @@ import IconButton from '@material-ui/core/IconButton/IconButton';
 
 import TrainIcon from '@material-ui/icons/Train';
 import Menu from './Menu';
+import Spinner from './static/Spinner';
+import ServerError from './static/ServerError';
+import axios from 'axios';
 
 const drawerWidth = 240;
 
@@ -45,14 +48,28 @@ class App extends Component {
     super(props);
 
     this.state = {
+      backendStatus: 'pending',
       selectedMenuItem: 'alerts'
     };
+  }
+
+  componentDidMount() {
+    axios.get("/health")
+      .then(() => this.setState({backendStatus: 'ok'}))
+      .catch(() => this.setState({backendStatus: 'error'}))
   }
 
   onMenuItemClick = selectedMenuItem => this.setState({selectedMenuItem});
 
   currentView = () => {
     let selectedView;
+
+    if (this.state.backendStatus === 'pending') {
+      return <Spinner/>;
+    } else if (this.state.backendStatus === 'error') {
+      return <ServerError/>;
+    }
+
     switch (this.state.selectedMenuItem) {
       case 'alerts':
         selectedView = <EntriesTable/>;
