@@ -8,7 +8,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination/TablePagination';
 import axios from 'axios';
-import MDSpinner from "react-md-spinner";
 import Spinner from './static/Spinner';
 
 const styles = theme => ({
@@ -44,12 +43,18 @@ class EntriesTable extends Component {
   render() {
     if (!this.state.loaded) return <Spinner/>;
 
+    // noinspection HtmlUnknownTarget
     const rows = this.state.entries.content.map(entry =>
       <TableRow key={entry.id}>
         <TableCell component="th" scope="row">
           {entry.publishedDate}
         </TableCell>
-        <TableCell>{entry.title}</TableCell>
+        <TableCell>
+          <a href={entry.detailsUrl} target="_blank">
+            <img src="ks-logo.png" height="10" style={{marginRight: 10}}/>
+          </a>
+          {entry.title}
+        </TableCell>
       </TableRow>
     );
     return (
