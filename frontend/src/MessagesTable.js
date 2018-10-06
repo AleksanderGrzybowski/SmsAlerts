@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -6,6 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import axios from 'axios';
 
 const styles = theme => ({
   root: {
@@ -18,32 +19,47 @@ const styles = theme => ({
   },
 });
 
-function MessagesTable({classes, messages}) {
 
-  const rows = messages.map(message =>
-    <TableRow key={message.id}>
-      <TableCell component="th" scope="row">
-        {message.status}
-      </TableCell>
-      <TableCell>{message.text}</TableCell>
-    </TableRow>
-  );
+class MessagesTable extends Component {
+ 
+  constructor(props) {
+    super(props);
 
-  return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Status</TableCell>
-            <TableCell>Text</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows}
-        </TableBody>
-      </Table>
-    </Paper>
-  );
+    this.state = {loaded: false, messages: []};
+  }
+
+  componentDidMount() {
+    axios.get('/api/messages')
+      .then(({data}) => this.setState({loaded: true, messages: data}));
+  }
+
+  render() {
+    if (!this.state.loaded) return <p>Spinner...</p>;
+
+    const rows = this.state.messages.map(message =>
+      <TableRow key={message.id}>
+        <TableCell component="th" scope="row">
+          {message.status}
+        </TableCell>
+        <TableCell>{message.text}</TableCell>
+      </TableRow>
+    );
+    return (
+      <Paper className={this.props.classes.root}>
+        <Table className={this.props.classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Status</TableCell>
+              <TableCell>Text</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows}
+          </TableBody>
+        </Table>
+      </Paper>
+    );
+  }
 }
 
 export default withStyles(styles)(MessagesTable);
