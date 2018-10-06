@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import EntriesTable from './EntriesTable';
 import MessagesTable from './MessagesTable';
-import IconButton from '@material-ui/core/IconButton/IconButton';
-
-import TrainIcon from '@material-ui/icons/Train';
 import Menu from './Menu';
 import Spinner from './static/Spinner';
 import ServerError from './static/ServerError';
 import axios from 'axios';
 import About from './static/About';
+import AppToolbar from './static/AppToolbar';
 
 const drawerWidth = 240;
 
@@ -93,16 +88,7 @@ class App extends Component {
     let selectedView = this.currentView();
     return (
       <div className={classes.root}>
-        <AppBar position="absolute" className={classes.appBar}>
-          <Toolbar>
-            <IconButton color="inherit" aria-label="Menu">
-              <TrainIcon/>
-            </IconButton>
-            <Typography variant="title" color="inherit">
-              SmsAlerts
-            </Typography>
-          </Toolbar>
-        </AppBar>
+        <AppToolbar/>
         <Drawer
           variant="permanent"
           classes={{

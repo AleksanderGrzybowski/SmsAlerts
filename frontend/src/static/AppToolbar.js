@@ -4,10 +4,17 @@ import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import Typography from '@material-ui/core/Typography/Typography';
 import TrainIcon from '@material-ui/icons/Train';
 import IconButton from '@material-ui/core/IconButton/IconButton';
+import { withStyles } from '@material-ui/core/styles';
 
-function AppToolbar() {
+const styles = theme => ({
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  }
+});
+
+function AppToolbar({classes}) {
   return (
-    <AppBar position="static">
+    <AppBar position="absolute" className={classes.appBar}>
       <Toolbar>
         <IconButton color="inherit" aria-label="Menu">
           <TrainIcon/>
@@ -20,4 +27,4 @@ function AppToolbar() {
   );
 }
 
-export default AppToolbar;
+export default withStyles(styles)(AppToolbar);
