@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
+import Spinner from './static/Spinner';
 
 const styles = theme => ({
   root: {
@@ -34,7 +35,7 @@ class MessagesTable extends Component {
   }
 
   render() {
-    if (!this.state.loaded) return <p>Spinner...</p>;
+    if (!this.state.loaded) return <Spinner />;
 
     const rows = this.state.messages.map(message =>
       <TableRow key={message.id}>

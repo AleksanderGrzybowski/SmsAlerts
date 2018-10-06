@@ -8,6 +8,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination/TablePagination';
 import axios from 'axios';
+import MDSpinner from "react-md-spinner";
+import Spinner from './static/Spinner';
 
 const styles = theme => ({
   root: {
@@ -40,7 +42,7 @@ class EntriesTable extends Component {
   handlePageChange = (_, page) => this.fetchData(page);
 
   render() {
-    if (!this.state.loaded) return <p>Spinner...</p>;
+    if (!this.state.loaded) return <Spinner/>;
 
     const rows = this.state.entries.content.map(entry =>
       <TableRow key={entry.id}>
