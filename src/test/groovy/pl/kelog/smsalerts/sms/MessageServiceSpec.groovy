@@ -34,14 +34,14 @@ class MessageServiceSpec extends Specification {
 
     void 'should list all messages'() {
         given:
-        List<Message> expected = [new Message(1L, '+123', 'text', MessageDeliveryStatus.OK)]
+        List<Message> repositoryMessages = [new Message(1L, '+123', 'text', MessageDeliveryStatus.OK)]
 
         when:
-        List<Message> result = service.list()
+        List<MessageDto> result = service.list()
 
         then:
-        result == expected
-        (1.._) * repository.findAll() >> expected
+        result == [new MessageDto(1L, 'text', MessageDeliveryStatus.OK)]
+        (1.._) * repository.findAll() >> repositoryMessages
     }
 
     void 'should reject empty recipient'() {

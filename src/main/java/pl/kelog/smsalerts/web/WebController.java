@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.kelog.smsalerts.poller.KsInfoEntry;
 import pl.kelog.smsalerts.poller.KsInfoEntryService;
-import pl.kelog.smsalerts.sms.Message;
+import pl.kelog.smsalerts.sms.MessageDto;
 import pl.kelog.smsalerts.sms.MessageService;
 
 import java.util.List;
@@ -33,7 +33,7 @@ class WebController {
     }
     
     @GetMapping("/messages")
-    public List<Message> listMessages() {
+    public List<MessageDto> listMessages() {
         return messageService.list();
     }
 }

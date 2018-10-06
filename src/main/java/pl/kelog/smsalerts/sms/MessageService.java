@@ -9,6 +9,8 @@ import pl.kelog.smsalerts.validation.ValidationException;
 
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 @RequiredArgsConstructor
 @Log
@@ -17,8 +19,10 @@ public class MessageService {
     private final SmsGateway smsGateway;
     private final MessageRepository repository;
     
-    public List<Message> list() {
-        return repository.findAll();
+    public List<MessageDto> list() {
+        return repository.findAll().stream()
+                .map(MessageService::messageToDto)
+                .collect(toList());
     }
     
     public MessageDeliveryStatus sendAndStore(String recipient, String text) {
@@ -44,5 +48,9 @@ public class MessageService {
                         "Text must be between 1 and 160 characters"
                 )
                 .throwIfErrors();
+    }
+    
+    private static MessageDto messageToDto(Message message) {
+        return new MessageDto(message.getId(), message.getText(), message.getStatus());
     }
 }
