@@ -1,7 +1,10 @@
 package pl.kelog.smsalerts.web;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,14 +23,17 @@ class WebController {
     private final MessageService messageService;
     private final KsInfoEntryService entryService;
     
-    @GetMapping("/data")
-    public DataDto fetchAllData() {
-        return new DataDto(entryService.list(), messageService.list());
+    @GetMapping("/alerts")
+    public Page<KsInfoEntry> listEntries(@PageableDefault(
+            size = 5,
+            sort = "publishedDate",
+            direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return entryService.listWithPaging(pageable);
     }
     
-    @Data
-    private static class DataDto {
-        public final List<KsInfoEntry> entries;
-        public final List<Message> messages;
+    @GetMapping("/messages")
+    public List<Message> listMessages() {
+        return messageService.list();
     }
 }

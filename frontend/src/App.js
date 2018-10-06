@@ -13,14 +13,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      entries: [], messages: [],
       selectedMenuItem: 'alerts'
     };
-  }
-
-  componentDidMount() {
-    axios.get("/api/data")
-      .then(({data}) => this.setState({entries: data.entries, messages: data.messages}));
   }
 
   onMenuItemClick = selectedMenuItem => this.setState({selectedMenuItem});
@@ -29,10 +23,10 @@ class App extends Component {
     let selectedView;
     switch (this.state.selectedMenuItem) {
       case 'alerts':
-        selectedView = <EntriesTable entries={this.state.entries}/>;
+        selectedView = <EntriesTable/>;
         break;
       case 'messages':
-        selectedView = <MessagesTable messages={this.state.messages}/>;
+        selectedView = <MessagesTable/>;
         break;
       case 'about':
         selectedView = <p>About</p>;
