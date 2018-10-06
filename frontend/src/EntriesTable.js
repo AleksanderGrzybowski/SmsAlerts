@@ -69,13 +69,15 @@ class EntriesTable extends Component {
           <TableBody>
             {rows}
             <tr>
-              <TablePagination
-                rowsPerPage={pageSize}
-                page={this.state.currentPage}
-                count={this.state.entries.totalElements}
-                onChangePage={this.handlePageChange}
-                rowsPerPageOptions={[pageSize]}
-              />
+              <td>
+                <TablePagination
+                  rowsPerPage={pageSize}
+                  page={this.state.currentPage}
+                  count={this.state.entries.totalElements}
+                  onChangePage={this.handlePageChange}
+                  rowsPerPageOptions={[pageSize]}
+                />
+              </td>
             </tr>
           </TableBody>
         </Table>
