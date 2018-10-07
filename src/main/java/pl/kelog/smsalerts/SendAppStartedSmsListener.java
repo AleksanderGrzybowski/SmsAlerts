@@ -19,7 +19,7 @@ class SendAppStartedSmsListener implements ApplicationListener<ApplicationReadyE
     public SendAppStartedSmsListener(
             MessageService messageService,
             @Value("${smsalerts.recipient}") String recipient,
-            @Value("${git.commit.id}") String commitId
+            @Value("${git.commit.id:devel}") String commitId
     ) {
         this.messageService = messageService;
         this.recipient = recipient;
@@ -34,6 +34,6 @@ class SendAppStartedSmsListener implements ApplicationListener<ApplicationReadyE
     }
     
     private String formatMessage() {
-        return "SmsAlerts (revision " + commitId.substring(0, 6) + ") started successfully!";
+        return "SmsAlerts (revision " + commitId.substring(0, 5) + ") started successfully!";
     }
 }
