@@ -17,29 +17,25 @@ const styles = theme => ({
 });
 
 function Menu(props) {
-  const makeMenuItem = (name, text, icon) => {
-    return (
-      <ListItem
-        button
-        selected={props.selectedMenuItem === name}
-        onClick={() => props.onMenuItemClick(name)}
-      >
-        <ListItemIcon>
-          {icon}
-        </ListItemIcon>
-        <ListItemText primary={text}/>
-      </ListItem>
-    );
-  };
+  const makeMenuItem = (name, text, icon) =>
+    <ListItem
+      key={name}
+      button
+      selected={props.selectedMenuItem === name}
+      onClick={() => props.onMenuItemClick(name)}
+    >
+      <ListItemIcon>
+        {icon}
+      </ListItemIcon>
+      <ListItemText primary={text}/>
+    </ListItem>;
 
-  return (
-   [
-      makeMenuItem('alerts', 'Last alerts', <WarningIcon/>),
-      makeMenuItem('messages', 'Sent messages', <EmailIcon/>),
-      <Divider/>,
-      makeMenuItem('about', 'About', <InfoIcon/>),
-   ]
-  );
+  return [
+    makeMenuItem('alerts', 'Last alerts', <WarningIcon/>),
+    makeMenuItem('messages', 'Sent messages', <EmailIcon/>),
+    <Divider key="divider"/>,
+    makeMenuItem('about', 'About', <InfoIcon/>),
+  ];
 }
 
 export default withStyles(styles)(Menu);
