@@ -7,9 +7,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination/TablePagination';
-import axios from 'axios';
 import Spinner from './static/Spinner';
-import { fetchAlerts, fetchMessages } from './api';
+import { fetchAlerts } from './api';
 
 const styles = theme => ({
   root: {
@@ -36,28 +35,38 @@ class EntriesTable extends Component {
     this.fetchData(0);
   }
 
-  fetchData = (page) => fetchAlerts(page, pageSize)
+  fetchData = page => fetchAlerts(page, pageSize)
     .then(({data}) => this.setState({loaded: true, currentPage: page, entries: data}));
 
   handlePageChange = (_, page) => this.fetchData(page);
 
+  // noinspection HtmlUnknownTarget
+  renderRows = () => this.state.entries.content.map(entry =>
+    <TableRow key={entry.id}>
+      <TableCell component="th" scope="row">
+        {entry.publishedDate}
+      </TableCell>
+      <TableCell>
+        <a href={entry.detailsUrl} target="_blank">
+          <img src="ks-logo.png" height="10" style={{marginRight: 10}} alt="logo"/>
+        </a>
+        {entry.title}
+      </TableCell>
+    </TableRow>
+  );
+
+  renderPagination = () =>
+    <TablePagination
+      rowsPerPage={pageSize}
+      page={this.state.currentPage}
+      count={this.state.entries.totalElements}
+      onChangePage={this.handlePageChange}
+      rowsPerPageOptions={[pageSize]}
+    />;
+
   render() {
     if (!this.state.loaded) return <Spinner/>;
 
-    // noinspection HtmlUnknownTarget
-    const rows = this.state.entries.content.map(entry =>
-      <TableRow key={entry.id}>
-        <TableCell component="th" scope="row">
-          {entry.publishedDate}
-        </TableCell>
-        <TableCell>
-          <a href={entry.detailsUrl} target="_blank">
-            <img src="ks-logo.png" height="10" style={{marginRight: 10}}/>
-          </a>
-          {entry.title}
-        </TableCell>
-      </TableRow>
-    );
     return (
       <Paper className={this.props.classes.root}>
         <Table className={this.props.classes.table}>
@@ -68,16 +77,10 @@ class EntriesTable extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows}
+            {this.renderRows()}
             <tr>
               <td>
-                <TablePagination
-                  rowsPerPage={pageSize}
-                  page={this.state.currentPage}
-                  count={this.state.entries.totalElements}
-                  onChangePage={this.handlePageChange}
-                  rowsPerPageOptions={[pageSize]}
-                />
+                {this.renderPagination()}
               </td>
             </tr>
           </TableBody>

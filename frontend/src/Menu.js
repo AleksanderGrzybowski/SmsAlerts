@@ -17,8 +17,6 @@ const styles = theme => ({
 });
 
 function Menu(props) {
-  const {classes} = props;
-
   const makeMenuItem = (name, text, icon) => {
     return (
       <ListItem

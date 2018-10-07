@@ -6,7 +6,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import axios from 'axios';
 import Spinner from './static/Spinner';
 import { fetchMessages } from './api';
 
@@ -23,7 +22,7 @@ const styles = theme => ({
 
 
 class MessagesTable extends Component {
- 
+
   constructor(props) {
     super(props);
 
@@ -35,17 +34,18 @@ class MessagesTable extends Component {
       .then(({data}) => this.setState({loaded: true, messages: data}));
   }
 
-  render() {
-    if (!this.state.loaded) return <Spinner />;
+  renderRows = () => this.state.messages.map(message =>
+    <TableRow key={message.id}>
+      <TableCell component="th" scope="row">
+        {message.status}
+      </TableCell>
+      <TableCell>{message.text}</TableCell>
+    </TableRow>
+  );
 
-    const rows = this.state.messages.map(message =>
-      <TableRow key={message.id}>
-        <TableCell component="th" scope="row">
-          {message.status}
-        </TableCell>
-        <TableCell>{message.text}</TableCell>
-      </TableRow>
-    );
+  render() {
+    if (!this.state.loaded) return <Spinner/>;
+
     return (
       <Paper className={this.props.classes.root}>
         <Table className={this.props.classes.table}>
@@ -56,7 +56,7 @@ class MessagesTable extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows}
+            {this.renderRows()}
           </TableBody>
         </Table>
       </Paper>
