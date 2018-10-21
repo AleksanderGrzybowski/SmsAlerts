@@ -16,7 +16,7 @@ class AccountBalance extends Component {
 
   render() {
     return this.state.loaded ? (
-      <span>{this.state.balance} PLN</span>
+      <span>{this.state.balance.toFixed(2)} PLN</span>
     ) : '...';
   }
 }
