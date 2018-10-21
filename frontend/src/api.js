@@ -11,3 +11,7 @@ export function fetchMessages() {
 export function fetchAlerts(page, pageSize) {
   return axios.get(`/api/alerts?size=${pageSize}&page=${page}`);
 }
+
+export function fetchAccountBalance() {
+  return axios.get('/api/balance');
+}
