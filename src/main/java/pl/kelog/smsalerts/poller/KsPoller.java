@@ -21,7 +21,7 @@ public class KsPoller {
     private final String recipient;
     private final List<String> patterns;
     
-    static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     
     public void prefetchEntriesIfNonePresent() {
         if (repository.count() == 0) {
@@ -45,15 +45,17 @@ public class KsPoller {
     private void processMessage(KsInfoEntryDto entryDto) {
         String formattedDate = entryDto.publishedDate.format(FORMATTER);
         
-        if (repository.countByPublishedDate(formattedDate) == 0) {
-            log.info("New entry with date " + formattedDate + " - " + entryDto.title + " found, saving");
+        if (repository.countByDetailsUrl(entryDto.detailsUrl) == 0) {
+            log.info("New entry with URL " + entryDto.detailsUrl + " - " + entryDto.title + " found, saving");
             KsInfoEntry newEntry = new KsInfoEntry(entryDto.title, formattedDate, entryDto.detailsUrl);
             repository.save(newEntry);
             
             if (shouldSendMessage(entryDto)) {
-                log.info("Entry with date " + formattedDate + " matches patterns '" + patterns + "', sending message...");
+                log.info("Entry with URL " + entryDto.detailsUrl + " matches patterns '" + patterns + "', sending message...");
                 messageService.sendAndStore(recipient, messageCreator.createMessage(newEntry));
             }
+        } else {
+            log.info("Entry " + entryDto.detailsUrl + " already exists, skipping.");
         }
     }
     
@@ -66,7 +68,7 @@ public class KsPoller {
     }
     
     private void store(KsInfoEntryDto entry) {
-        log.info("Storing entry " + entry.publishedDate.format(FORMATTER));
+        log.info("Storing entry " + entry.detailsUrl);
         repository.save(new KsInfoEntry(entry.title, entry.publishedDate.format(FORMATTER), entry.detailsUrl));
     }
 }

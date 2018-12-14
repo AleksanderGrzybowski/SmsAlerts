@@ -1,18 +1,19 @@
 package pl.kelog.smsalerts.dto;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-@Data
 @RequiredArgsConstructor
+@EqualsAndHashCode(of="detailsUrl")
 public class KsInfoEntryDto {
     public final String title;
-    public final LocalDateTime publishedDate;
+    public final LocalDate publishedDate;
     public final String detailsUrl;
     
-    public KsInfoEntryDto(String title, LocalDateTime publishedDate) {
+    public KsInfoEntryDto(String title, LocalDate publishedDate) {
         this(title, publishedDate, "");
     }
+    
 }

@@ -3,7 +3,7 @@ package pl.kelog.smsalerts.parser
 import pl.kelog.smsalerts.dto.KsInfoEntryDto
 import spock.lang.Specification
 
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.time.Month
 import java.time.format.DateTimeFormatter
 
@@ -19,14 +19,14 @@ class KsWebpageContentParserSpec extends Specification {
         given:
         List<KsInfoEntryDto> twoElements = [
                 new KsInfoEntryDto(
-                        'Katowice 15:34 – Tychy Lodowisko 16:01 – opóźniony na odjeździe (delayed on departure) 10 minut',
-                        LocalDateTime.of(2017, Month.APRIL, 13, 15, 55, 0),
-                        'http://kolejeslaskie.com/katowice-1534-tychy-lodowisko-1601-opozniony-na-odjezdzie-delayed-on-departure-10-minut/'
+                        'Pociąg 94311 relacji Oświęcim 19:52 &#8211; Lubliniec 22:15 &#8211; opóźniony na odjeździe (delayed on route) 12 minut.',
+                        LocalDate.of(2018, Month.DECEMBER, 14),
+                        'https://kolejeslaskie.com/pociag-94311-relacji-oswiecim-1952-lubliniec-2215-opozniony-na-odjezdzie-delayed-on-route-12-minut/'
                 ),
                 new KsInfoEntryDto(
-                        'Gliwice 13:45 – Częstochowa 15:52 – opóźniony na odjeździe (delayed on departure) 30 minut',
-                        LocalDateTime.of(2017, Month.APRIL, 13, 13, 51, 0),
-                        'http://kolejeslaskie.com/gliwice-1345-czestochowa-1552-opozniony-na-odjezdzie-delayed-on-departure-30-minut/'
+                        'Pociąg 94660 relacji Wisła Gł. 19:25 &#8211; Katowice 21:45 &#8211; opóźniony na trasie (delayed on route) 20 minut.',
+                        LocalDate.of(2018, Month.DECEMBER, 14),
+                        'https://kolejeslaskie.com/pociag-94660-relacji-wisla-gl-1925-katowice-2145-opozniony-na-trasie-delayed-on-route-20-minut/'
                 )
         ]
         when:
@@ -42,8 +42,8 @@ class KsWebpageContentParserSpec extends Specification {
         DateTimeFormatter formatter = KsWebpageContentParser.getFormatter()
 
         expect:
-        LocalDateTime.parse('1 maja 2017 8:11', formatter) == LocalDateTime.of(2017, Month.MAY, 1, 8, 11)
-        LocalDateTime.parse('10 maja 2017 8:11', formatter) == LocalDateTime.of(2017, Month.MAY, 10, 8, 11 )
+        LocalDate.parse('1 maja 2017', formatter) == LocalDate.of(2017, Month.MAY, 1,)
+        LocalDate.parse('10 maja 2017', formatter) == LocalDate.of(2017, Month.MAY, 10)
     }
 
     String readResource(String filename) {
