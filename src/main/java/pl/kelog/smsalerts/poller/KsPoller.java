@@ -46,13 +46,15 @@ public class KsPoller {
         String formattedDate = entryDto.publishedDate.format(FORMATTER);
         
         if (repository.countByDetailsUrl(entryDto.detailsUrl) == 0) {
-            log.info("New entry with URL " + entryDto.detailsUrl + " - " + entryDto.title + " found, saving");
+            log.info("New entry with URL " + entryDto.detailsUrl + " - " + entryDto.title + " found, saving.");
             KsInfoEntry newEntry = new KsInfoEntry(entryDto.title, formattedDate, entryDto.detailsUrl);
             repository.save(newEntry);
             
             if (shouldSendMessage(entryDto)) {
                 log.info("Entry with URL " + entryDto.detailsUrl + " matches patterns '" + patterns + "', sending message...");
                 messageService.sendAndStore(recipient, messageCreator.createMessage(newEntry));
+            } else {
+                log.info("Entry with URL " + entryDto.detailsUrl + " does not match, skipping.");
             }
         } else {
             log.info("Entry " + entryDto.detailsUrl + " already exists, skipping.");
