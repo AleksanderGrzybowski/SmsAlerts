@@ -44,7 +44,8 @@ class EntriesTable extends Component {
   renderRows = () => this.state.entries.content.map(entry =>
     <TableRow key={entry.id}>
       <TableCell component="th" scope="row">
-        {entry.publishedDate}
+        {entry.publishedDate} &nbsp;
+        {entry.scrapeTime}
       </TableCell>
       <TableCell>
         <a href={entry.detailsUrl} target="_blank">

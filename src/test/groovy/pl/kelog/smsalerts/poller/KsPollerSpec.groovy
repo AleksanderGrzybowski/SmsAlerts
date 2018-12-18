@@ -8,9 +8,11 @@ import spock.lang.Specification
 
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.Month
 
-import static KsPoller.FORMATTER
+import static KsPoller.DATE_FORMATTER
+import static KsPoller.TIME_FORMATTER
 
 class KsPollerSpec extends Specification {
 
@@ -26,7 +28,7 @@ class KsPollerSpec extends Specification {
         repository = Mock(KsInfoEntryRepository)
         downloaderService = Mock(KsEntryDownloader)
         messageService = Mock(MessageService)
-        
+
         messageCreator = Mock(MessageCreator)
         messageCreator.createMessage(_) >> { KsInfoEntry entry -> entry.title }
     }
@@ -38,8 +40,14 @@ class KsPollerSpec extends Specification {
     void 'given empty datastore should fetch and store last page of results'() {
         given:
         service = setupService()
-        KsInfoEntryDto entry = new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDate.now(), 'http://detailsurl')
-        KsInfoEntry entity = new KsInfoEntry(null, entry.title, entry.publishedDate.format(FORMATTER), entry.detailsUrl)
+        KsInfoEntryDto entry = new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDate.now(), LocalTime.now(), 'http://detailsurl')
+        KsInfoEntry entity = new KsInfoEntry(
+                null,
+                entry.title,
+                entry.publishedDate.format(DATE_FORMATTER),
+                entry.scrapeTime.format(TIME_FORMATTER),
+                entry.detailsUrl
+        )
 
         repository.count() >> 0L
 
@@ -81,13 +89,13 @@ class KsPollerSpec extends Specification {
         given:
         service = setupService(['Katowice', 'Gliwice'])
         List<KsInfoEntryDto> entries = [
-                new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDate.now()),
-                new KsInfoEntryDto('Utrudnienia na odcinku Gliwice-Ruda Chebzie', LocalDate.now()),
-                new KsInfoEntryDto('Opóźnienie Katowice', LocalDate.now()),
-                new KsInfoEntryDto('Roboty torowe na odcinku Pszczyna-Kobiór', LocalDate.now())
+                new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDate.now(), LocalTime.now()),
+                new KsInfoEntryDto('Utrudnienia na odcinku Gliwice-Ruda Chebzie', LocalDate.now(), LocalTime.now()),
+                new KsInfoEntryDto('Opóźnienie Katowice', LocalDate.now(), LocalTime.now()),
+                new KsInfoEntryDto('Roboty torowe na odcinku Pszczyna-Kobiór', LocalDate.now(), LocalTime.now())
         ]
         List<KsInfoEntry> entities = entries.collect {
-            new KsInfoEntry(null, it.title, it.publishedDate.format(FORMATTER), '')
+            new KsInfoEntry(null, it.title, it.publishedDate.format(DATE_FORMATTER), it.scrapeTime.format(TIME_FORMATTER), '')
         }
 
         downloaderService.downloadFirstPage() >> entries
@@ -108,12 +116,12 @@ class KsPollerSpec extends Specification {
         given:
         service = setupService(['Katowice'])
         List<KsInfoEntryDto> entries = [
-                new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDate.of(2017, Month.APRIL, 13)),
-                new KsInfoEntryDto('Opóźnienie Katowice', LocalDate.of(2017, Month.APRIL, 13))
+                new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDate.of(2017, Month.APRIL, 13), LocalTime.now()),
+                new KsInfoEntryDto('Opóźnienie Katowice', LocalDate.of(2017, Month.APRIL, 13), LocalTime.now())
         ]
 
-        repository.countByPublishedDate(LocalDateTime.of(2017, Month.APRIL, 13, 21, 0).format(FORMATTER)) >> 1
-        repository.countByPublishedDate(LocalDateTime.of(2017, Month.APRIL, 13, 23, 0).format(FORMATTER)) >> 0
+        repository.countByDetailsUrl(LocalDateTime.of(2017, Month.APRIL, 13, 21, 0).format(DATE_FORMATTER)) >> 1
+        repository.countByDetailsUrl(LocalDateTime.of(2017, Month.APRIL, 13, 23, 0).format(DATE_FORMATTER)) >> 0
         downloaderService.downloadFirstPage() >> entries
 
         when:
@@ -123,7 +131,8 @@ class KsPollerSpec extends Specification {
         1 * repository.save(new KsInfoEntry(
                 null,
                 'Opóźnienie Katowice',
-                LocalDateTime.of(2017, Month.APRIL, 13, 23, 0).format(FORMATTER),
+                LocalDate.of(2017, Month.APRIL, 13).format(DATE_FORMATTER),
+                LocalTime.now().format(TIME_FORMATTER),
                 ''
         ))
 
@@ -133,7 +142,7 @@ class KsPollerSpec extends Specification {
     void 'should properly match - on empty string should always match any input'() {
         when:
         service = setupService(patterns)
-        KsInfoEntryDto entry = new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDate.of(2017, Month.APRIL, 13))
+        KsInfoEntryDto entry = new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDate.of(2017, Month.APRIL, 13), LocalTime.now())
 
         then:
         shouldSend == service.shouldSendMessage(entry)
