@@ -1,59 +1,38 @@
 package pl.kelog.smsalerts.parser
 
-import pl.kelog.smsalerts.dto.KsInfoEntryDto
-import pl.kelog.smsalerts.util.NowProvider
 import spock.lang.Specification
 
 import java.time.LocalDate
-import java.time.LocalTime
-import java.time.Month
-import java.time.format.DateTimeFormatter
+import java.time.Month 
 
 class KsWebpageContentParserSpec extends Specification {
 
-    private static final LocalTime NOW = LocalTime.of(12, 34)
-    
     KsWebpageContentParser parser
 
-    NowProvider nowProviderStub
-
     void setup() {
-        nowProviderStub = Stub(NowProvider)
-        nowProviderStub.now() >> NOW
-        parser = new KsWebpageContentParser(nowProviderStub)
+        parser = new KsWebpageContentParser()
     }
 
     void 'should extract titles and dates from sample page'() {
         given:
-        List<KsInfoEntryDto> twoElements = [
-                new KsInfoEntryDto(
-                        'Pociąg 94311 relacji Oświęcim 19:52 &#8211; Lubliniec 22:15 &#8211; opóźniony na odjeździe (delayed on route) 12 minut.',
+        List<KsInfoParsedEntryDto> twoElements = [
+                new KsInfoParsedEntryDto(
+                        'Pociąg 94311 relacji Oświęcim 19:52 – Lubliniec 22:15 – opóźniony na odjeździe (delayed on route) 12 minut.',
                         LocalDate.of(2018, Month.DECEMBER, 14),
-                        NOW,
                         'https://kolejeslaskie.com/pociag-94311-relacji-oswiecim-1952-lubliniec-2215-opozniony-na-odjezdzie-delayed-on-route-12-minut/'
                 ),
-                new KsInfoEntryDto(
-                        'Pociąg 94660 relacji Wisła Gł. 19:25 &#8211; Katowice 21:45 &#8211; opóźniony na trasie (delayed on route) 20 minut.',
+                new KsInfoParsedEntryDto(
+                        'Pociąg 94660 relacji Wisła Gł. 19:25 – Katowice 21:45 – opóźniony na trasie (delayed on route) 20 minut.',
                         LocalDate.of(2018, Month.DECEMBER, 14),
-                        NOW,
                         'https://kolejeslaskie.com/pociag-94660-relacji-wisla-gl-1925-katowice-2145-opozniony-na-trasie-delayed-on-route-20-minut/'
                 )
         ]
         when:
-        List<KsInfoEntryDto> entries = parser.parse(readResource('1.html'))
+        List<KsInfoParsedEntryDto> entries = parser.parse(readResource('1.html'))
 
         then:
         entries.size() == 20
         entries.subList(0, 2) == twoElements
-    }
-
-    void 'should properly parse both single and double digit date'() {
-        given:
-        DateTimeFormatter formatter = KsWebpageContentParser.getFormatter()
-
-        expect:
-        LocalDate.parse('1 maja 2017', formatter) == LocalDate.of(2017, Month.MAY, 1,)
-        LocalDate.parse('10 maja 2017', formatter) == LocalDate.of(2017, Month.MAY, 10)
     }
 
     String readResource(String filename) {
