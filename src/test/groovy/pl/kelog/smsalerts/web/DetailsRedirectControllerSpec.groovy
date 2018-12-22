@@ -20,7 +20,7 @@ class DetailsRedirectControllerSpec extends Specification {
 
     void setup() {
         mockMvc = standaloneSetup(new DetailsRedirectController(ksInfoEntryServiceStub)).build()
-        ksInfoEntryServiceStub.list() >> [entry]
+        ksInfoEntryServiceStub.findById(123) >> entry
     }
 
     def 'should redirect correctly for existing entry id'() {

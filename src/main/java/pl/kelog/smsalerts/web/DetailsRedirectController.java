@@ -11,7 +11,6 @@ import pl.kelog.smsalerts.poller.KsInfoEntry;
 import pl.kelog.smsalerts.poller.KsInfoEntryService;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,12 +25,10 @@ public class DetailsRedirectController {
             @SuppressWarnings("MVCPathVariableInspection") @PathVariable("id") int id,
             HttpServletResponse response
     ) {
-        Optional<KsInfoEntry> entry = entryService.list().stream()
-                .filter(e -> e.getId() == id)
-                .findFirst();
+        KsInfoEntry entry = entryService.findById(id);
         
-        if (entry.isPresent()) {
-            response.setHeader("Location", entry.get().getDetailsUrl());
+        if (entry != null) {
+            response.setHeader("Location", entry.getDetailsUrl());
             return new ResponseEntity<>(HttpStatus.TEMPORARY_REDIRECT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
