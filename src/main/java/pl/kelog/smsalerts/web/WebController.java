@@ -30,7 +30,7 @@ class WebController {
     @GetMapping("/alerts")
     public Page<KsInfoEntry> listEntries(@PageableDefault(
             size = 5,
-            sort = "publishedDate",
+            sort = {"publishedDate", "scrapeTime"},
             direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return entryService.listWithPaging(pageable);
