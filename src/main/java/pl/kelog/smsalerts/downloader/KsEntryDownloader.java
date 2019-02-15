@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class KsEntryDownloader {
     
-    private static final String KS_INFO_SITE_URL = "http://kolejeslaskie.com/category/informacje/";
+    private static final String KS_INFO_SITE_URL = "https://www.kolejeslaskie.com/category/informacje/";
     
     private final KsWebpageContentParser parser;
     
