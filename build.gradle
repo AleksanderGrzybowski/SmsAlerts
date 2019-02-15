@@ -44,4 +44,6 @@ dependencies {
     compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
 
     compile group: 'org.webjars', name: 'bootstrap', version: '3.3.5'
+
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.498'
 }
