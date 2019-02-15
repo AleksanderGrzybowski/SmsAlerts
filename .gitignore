@@ -30,3 +30,5 @@ nbdist/
 
 frontend/node_modules
 frontend/dist
+
+smsalerts-dev.mv.db
