@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import EntriesTable from './EntriesTable';
 import MessagesTable from './MessagesTable';
-import Menu from './Menu';
 import Spinner from './static/Spinner';
 import ServerError from './static/ServerError';
 import About from './static/About';
-import AppToolbar from './static/AppToolbar';
+import AppToolbar from './AppToolbar';
 import { healthcheck } from './api';
 import 'bootstrap/dist/css/bootstrap.css'
 import { Container } from 'react-bootstrap';
