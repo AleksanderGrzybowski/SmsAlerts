@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Spinner from './static/Spinner';
 import { fetchAlerts } from './api';
+import Table from 'react-bootstrap/Table';
 
-const pageSize = 5;
 
 class EntriesTable extends Component {
 
@@ -13,18 +13,17 @@ class EntriesTable extends Component {
   }
 
   componentDidMount() {
-    this.fetchData(0);
+    this.fetchData();
   }
 
-  fetchData = page => fetchAlerts(page, pageSize)
-    .then(({data}) => this.setState({loaded: true, currentPage: page, entries: data}));
+  fetchData = () => fetchAlerts(0, 10000) // TODO refactor
+    .then(({data}) => this.setState({loaded: true, currentPage: 0, entries: data}));
 
-  handlePageChange = (_, page) => this.fetchData(page);
 
   // noinspection HtmlUnknownTarget
-  renderRows = () => this.state.entries.content.map(entry =>
+  renderRows = () => this.state.entries.map(entry =>
     <tr key={entry.id}>
-      <td component="th" scope="row">
+      <td>
         {entry.publishedDate} &nbsp;
         {entry.scrapeTime}
       </td>
@@ -37,20 +36,11 @@ class EntriesTable extends Component {
     </tr>
   );
 
-  renderPagination = () =>
-    <span
-      rowsPerPage={pageSize}
-      page={this.state.currentPage}
-      count={this.state.entries.totalElements}
-      onChangePage={this.handlePageChange}
-      rowsPerPageOptions={[pageSize]}
-    >here pagination</span>;
-
   render() {
     if (!this.state.loaded) return <Spinner/>;
 
     return (
-      <table>
+      <Table striped>
         <thead>
           <tr>
             <td>Date</td>
@@ -59,13 +49,8 @@ class EntriesTable extends Component {
         </thead>
         <tbody>
           {this.renderRows()}
-          <tr>
-            <td>
-              {this.renderPagination()}
-            </td>
-          </tr>
         </tbody>
-      </table>
+      </Table>
     );
   }
 }

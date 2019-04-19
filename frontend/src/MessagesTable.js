@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Spinner from './static/Spinner';
 import { fetchMessages } from './api';
+import { Table } from 'react-bootstrap';
 
 class MessagesTable extends Component {
 
@@ -17,7 +18,7 @@ class MessagesTable extends Component {
 
   renderRows = () => this.state.messages.map(message =>
     <tr key={message.id}>
-      <td component="th" scope="row">
+      <td component="th">
         {message.status}
       </td>
       <td>{message.text}</td>
@@ -28,17 +29,17 @@ class MessagesTable extends Component {
     if (!this.state.loaded) return <Spinner/>;
 
     return (
-      <table>
+      <Table striped>
         <thead>
-          <tr>
-            <td>Status</td>
-            <td>Text</td>
-          </tr>
+        <tr>
+          <td>Status</td>
+          <td>Text</td>
+        </tr>
         </thead>
         <tbody>
-          {this.renderRows()}
+        {this.renderRows()}
         </tbody>
-      </table>
+      </Table>
     );
   }
 }

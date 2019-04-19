@@ -1,10 +1,10 @@
 import React from 'react';
+import { Nav } from 'react-bootstrap';
 
 function Menu(props) {
   const makeMenuItem = (name, text, icon) =>
-    <span
+    <Nav.Link
       key={name}
-      button
       selected={props.selectedMenuItem === name}
       onClick={() => props.onMenuItemClick(name)}
     >
@@ -12,7 +12,7 @@ function Menu(props) {
         {icon}
       </span>
       <p>{text}</p>
-    </span>;
+    </Nav.Link>;
 
   return [
     makeMenuItem('alerts', 'Last alerts', 'warning'),

@@ -1,9 +1,9 @@
 package pl.kelog.smsalerts.poller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,7 +15,7 @@ public class KsInfoEntryService {
         return repository.findOne(id);
     }
     
-    public Page<KsInfoEntry> listWithPaging(Pageable pageable) {
-        return repository.findAll(pageable);
+    public List<KsInfoEntry> list() {
+        return repository.findAll();
     }
 }

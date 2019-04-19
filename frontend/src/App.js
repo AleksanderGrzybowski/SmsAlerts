@@ -8,6 +8,7 @@ import About from './static/About';
 import AppToolbar from './static/AppToolbar';
 import { healthcheck } from './api';
 import 'bootstrap/dist/css/bootstrap.css'
+import { Container } from 'react-bootstrap';
 
 
 class App extends Component {
@@ -51,20 +52,15 @@ class App extends Component {
   render() {
 
     return (
-      <div>
-        <AppToolbar/>
-        <div>
-          <div>
-            <Menu
-              selectedMenuItem={this.state.selectedMenuItem}
-              onMenuItemClick={this.onMenuItemClick}
-            />
-          </div>
-        </div>
+      <Container  fluid>
+        <AppToolbar
+          selectedMenuItem={this.state.selectedMenuItem}
+          onMenuItemClick={this.onMenuItemClick}
+        />
         <main style={{marginTop: 50}}>
           {this.currentView()}
         </main>
-      </div>
+      </Container>
     );
   }
 }

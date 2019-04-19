@@ -1,21 +1,17 @@
 import React from 'react';
 import AccountBalance from '../AccountBalance';
+import { Nav, Navbar } from 'react-bootstrap';
+import Menu from '../Menu';
 
-function AppToolbar() {
+function AppToolbar(props) {
   return (
-    <div>
-      <div>
-        <span>
-          train icon
-        </span>
-        <span>
-          SmsAlerts
-        </span>
-        <span>
-          <AccountBalance/>
-        </span> 
-      </div>
-    </div>
+    <Navbar bg="light" variant="light">
+      <Navbar.Brand href="#home">(train icon) SmsAlerts</Navbar.Brand>
+      <Nav className="mr-auto">
+        <Menu {...props} />
+      </Nav>
+      <AccountBalance/>
+    </Navbar>
   );
 }
 
