@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
 import EntriesTable from './EntriesTable';
 import MessagesTable from './MessagesTable';
 import Menu from './Menu';
@@ -10,33 +7,8 @@ import ServerError from './static/ServerError';
 import About from './static/About';
 import AppToolbar from './static/AppToolbar';
 import { healthcheck } from './api';
+import 'bootstrap/dist/css/bootstrap.css'
 
-const drawerWidth = 240;
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    height: 900,
-    zIndex: 1,
-    overflow: 'hidden',
-    position: 'relative',
-    display: 'flex',
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  drawerPaper: {
-    position: 'relative',
-    width: drawerWidth,
-  },
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing.unit * 3,
-    minWidth: 0, // So the Typography noWrap works
-  },
-  toolbar: theme.mixins.toolbar,
-});
 
 class App extends Component {
 
@@ -77,26 +49,19 @@ class App extends Component {
   };
 
   render() {
-    const {classes} = this.props;
 
     return (
-      <div className={classes.root}>
+      <div>
         <AppToolbar/>
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <div className={classes.toolbar}/>
-          <List>
+        <div>
+          <div>
             <Menu
               selectedMenuItem={this.state.selectedMenuItem}
               onMenuItemClick={this.onMenuItemClick}
             />
-          </List>
-        </Drawer>
-        <main className={classes.content} style={{marginTop: 50}}>
+          </div>
+        </div>
+        <main style={{marginTop: 50}}>
           {this.currentView()}
         </main>
       </div>
@@ -104,4 +69,4 @@ class App extends Component {
   }
 }
 
-export default withStyles(styles)(App);
+export default App;
