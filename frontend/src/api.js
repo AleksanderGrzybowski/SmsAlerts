@@ -8,8 +8,8 @@ export function fetchMessages() {
   return axios.get('/api/messages');
 }
 
-export function fetchAlerts(page, pageSize) {
-  return axios.get(`/api/alerts?size=${pageSize}&page=${page}`);
+export function fetchAlerts() {
+  return axios.get('/api/alerts');
 }
 
 export function fetchAccountBalance() {

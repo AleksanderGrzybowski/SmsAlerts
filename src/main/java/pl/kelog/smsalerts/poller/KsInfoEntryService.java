@@ -1,6 +1,8 @@
 package pl.kelog.smsalerts.poller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class KsInfoEntryService {
     
+    private static final Sort SORT = new Sort(Direction.DESC, "publishedDate", "scrapeTime");
     private final KsInfoEntryRepository repository;
     
     public KsInfoEntry findById(long id) {
@@ -16,6 +19,6 @@ public class KsInfoEntryService {
     }
     
     public List<KsInfoEntry> list() {
-        return repository.findAll();
+        return repository.findAll(SORT);
     }
 }

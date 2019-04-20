@@ -1,14 +1,15 @@
 import React from 'react';
+import { Alert } from 'react-bootstrap';
 
 function ServerError() {
 
   return (
-    <div>
-      <div>
-        Something went wrong
+    <Alert variant="danger">
+      <Alert.Heading> Something went wrong </Alert.Heading>
+      <p>
         Please <a href="/">refresh the page</a> or try again later.
-      </div>
-    </div>
+      </p>
+    </Alert>
   );
 }
 

@@ -16,8 +16,8 @@ class EntriesTable extends Component {
     this.fetchData();
   }
 
-  fetchData = () => fetchAlerts(0, 10000) // TODO refactor
-    .then(({data}) => this.setState({loaded: true, currentPage: 0, entries: data}));
+  fetchData = () => fetchAlerts()
+    .then(({data}) => this.setState({loaded: true, entries: data}));
 
 
   // noinspection HtmlUnknownTarget
@@ -42,13 +42,13 @@ class EntriesTable extends Component {
     return (
       <Table striped>
         <thead>
-          <tr>
-            <td>Date</td>
-            <td>Alert title</td>
-          </tr>
+        <tr>
+          <td>Date</td>
+          <td>Alert title</td>
+        </tr>
         </thead>
         <tbody>
-          {this.renderRows()}
+        {this.renderRows()}
         </tbody>
       </Table>
     );

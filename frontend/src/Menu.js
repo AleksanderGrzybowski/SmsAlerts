@@ -7,9 +7,9 @@ function Menu(props) {
       key={name}
       selected={props.selectedMenuItem === name}
       onClick={() => props.onMenuItemClick(name)}
-      style={{cursor: 'pointer', marginRight: 10, color: props.selectedMenuItem === name ? 'black' : 'gray'}}
+      style={{cursor: 'pointer', marginRight: 20, color: props.selectedMenuItem === name ? 'black' : 'gray'}}
     >
-      <span style={{marginRight: 10}}>
+      <span style={{marginRight: 5}}>
         <i className={'fa fa-' + icon}/>
       </span>
       <span>{text}</span>
