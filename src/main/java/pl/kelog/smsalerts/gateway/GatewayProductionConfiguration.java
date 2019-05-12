@@ -10,8 +10,14 @@ import pl.kelog.smsalerts.gateway.bramkasms.BramkasmsConfiguration;
 import static java.util.Arrays.asList;
 import static pl.kelog.smsalerts.Utils.assertPresent;
 
+/**
+ * I've been receiving hundreds of SMS messages and this piece
+ * of code has been battle-tested. It's time to rest in peace.
+ * 
+ * If real SMS sending is to be enabled, please reenable this configuration.
+ */
 @Configuration
-@Profile("production")
+@Profile("this-is-disabled")
 @Log
 class GatewayProductionConfiguration {
     

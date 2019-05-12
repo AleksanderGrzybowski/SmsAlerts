@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 import pl.kelog.smsalerts.gateway.fake.FakeGateway;
 
 @Configuration
-@Profile("development")
+@Profile({"development", "production"})
 class GatewayDevelopmentConfiguration {
     
     @Bean
