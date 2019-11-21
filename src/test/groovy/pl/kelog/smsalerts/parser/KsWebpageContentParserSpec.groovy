@@ -17,18 +17,18 @@ class KsWebpageContentParserSpec extends Specification {
         given:
         List<KsInfoParsedEntryDto> twoElements = [
                 new KsInfoParsedEntryDto(
-                        'Pociąg 94311 relacji Oświęcim 19:52 – Lubliniec 22:15 – opóźniony na odjeździe (delayed on route) 12 minut.',
-                        LocalDate.of(2018, Month.DECEMBER, 14),
-                        'https://kolejeslaskie.com/pociag-94311-relacji-oswiecim-1952-lubliniec-2215-opozniony-na-odjezdzie-delayed-on-route-12-minut/'
+                        'Pociąg nr 44809 relacji  Katowice 12:24 – Bohumin 14:00 – opóźniony na trasie  (delayed on route) 10 minut.',
+                        LocalDate.of(2019, Month.NOVEMBER, 21),
+                        'https://www.kolejeslaskie.com/pociag-nr-44809-relacji-katowice-1224-bohumin-1400-opozniony-na-trasie-delayed-on-route-10-minut-6/'
                 ),
                 new KsInfoParsedEntryDto(
-                        'Pociąg 94660 relacji Wisła Gł. 19:25 – Katowice 21:45 – opóźniony na trasie (delayed on route) 20 minut.',
-                        LocalDate.of(2018, Month.DECEMBER, 14),
-                        'https://kolejeslaskie.com/pociag-94660-relacji-wisla-gl-1925-katowice-2145-opozniony-na-trasie-delayed-on-route-20-minut/'
+                        'Pociąg nr 94143 relacji Katowice 10:57 – Cieszyn 12:34 – opóźniony na trasie (delayed on route) 18 minut.',
+                        LocalDate.of(2019, Month.NOVEMBER, 21),
+                        'https://kolejeslaskie.com/pociag-94311-relacji-oswiecim-1952-lubliniec-2215-opozniony-na-odjezdzie-delayed-on-route-12-minut/'
                 )
         ]
         when:
-        List<KsInfoParsedEntryDto> entries = parser.parse(readResource('1.html'))
+        List<KsInfoParsedEntryDto> entries = parser.parse(readResource('2.html'))
 
         then:
         entries.size() == 20
