@@ -15,7 +15,7 @@ class PolishDateParserSpec extends Specification {
 
     void 'should properly parse both single and double digit date'() {
         expect:
-        parser.toLocalDate('1 maja 2017') == LocalDate.of(2017, Month.MAY, 1)
-        parser.toLocalDate('10 maja 2017') == LocalDate.of(2017, Month.MAY, 10)
+        parser.toLocalDate('1 maja 2017 12:45') == LocalDate.of(2017, Month.MAY, 1)
+        parser.toLocalDate('10 maja 2017 09:45') == LocalDate.of(2017, Month.MAY, 10)
     }
 }
