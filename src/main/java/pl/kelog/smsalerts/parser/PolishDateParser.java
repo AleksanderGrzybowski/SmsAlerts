@@ -1,17 +1,17 @@
 package pl.kelog.smsalerts.parser;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 class PolishDateParser {
     
     private static final DateTimeFormatter KS_WEBSITE_DATE_FORMATTER = DateTimeFormatter.ofPattern(
-            "d MMMM yyyy",
+            "d MMMM yyyy HH:mm",
             new Locale("pl")
     );
     
-    LocalDate toLocalDate(String date) {
-        return LocalDate.parse(date, KS_WEBSITE_DATE_FORMATTER);
+    LocalDateTime toLocalDateTime(String date) {
+        return LocalDateTime.parse(date, KS_WEBSITE_DATE_FORMATTER);
     }
 }

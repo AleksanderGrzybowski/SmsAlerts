@@ -6,13 +6,10 @@ import pl.kelog.smsalerts.message.MessageCreator
 import pl.kelog.smsalerts.sms.MessageService
 import spock.lang.Specification
 
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.Month
 
-import static KsPoller.DATE_FORMATTER
-import static KsPoller.TIME_FORMATTER
+import static KsPoller.DATE_FORMATTER 
 
 class KsPollerSpec extends Specification {
 
@@ -40,12 +37,11 @@ class KsPollerSpec extends Specification {
     void 'given empty datastore should fetch and store last page of results'() {
         given:
         service = setupService()
-        KsInfoEntryDto entry = new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDate.now(), LocalTime.now(), 'http://detailsurl')
+        KsInfoEntryDto entry = new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDateTime.now(), 'http://detailsurl')
         KsInfoEntry entity = new KsInfoEntry(
                 null,
                 entry.title,
-                entry.publishedDate.format(DATE_FORMATTER),
-                entry.scrapeTime.format(TIME_FORMATTER),
+                entry.publishedDateTime.format(DATE_FORMATTER),
                 entry.detailsUrl
         )
 
@@ -89,13 +85,13 @@ class KsPollerSpec extends Specification {
         given:
         service = setupService(['Katowice', 'Gliwice'])
         List<KsInfoEntryDto> entries = [
-                new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDate.now(), LocalTime.now()),
-                new KsInfoEntryDto('Utrudnienia na odcinku Gliwice-Ruda Chebzie', LocalDate.now(), LocalTime.now()),
-                new KsInfoEntryDto('Opóźnienie Katowice', LocalDate.now(), LocalTime.now()),
-                new KsInfoEntryDto('Roboty torowe na odcinku Pszczyna-Kobiór', LocalDate.now(), LocalTime.now())
+            new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDateTime.now()),
+            new KsInfoEntryDto('Utrudnienia na odcinku Gliwice-Ruda Chebzie', LocalDateTime.now()),
+            new KsInfoEntryDto('Opóźnienie Katowice', LocalDateTime.now()),
+            new KsInfoEntryDto('Roboty torowe na odcinku Pszczyna-Kobiór', LocalDateTime.now())
         ]
         List<KsInfoEntry> entities = entries.collect {
-            new KsInfoEntry(null, it.title, it.publishedDate.format(DATE_FORMATTER), it.scrapeTime.format(TIME_FORMATTER), '')
+            new KsInfoEntry(null, it.title, it.publishedDateTime.format(DATE_FORMATTER), '')
         }
 
         downloaderService.downloadFirstPage() >> entries
@@ -116,8 +112,8 @@ class KsPollerSpec extends Specification {
         given:
         service = setupService(['Katowice'])
         List<KsInfoEntryDto> entries = [
-                new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDate.of(2017, Month.APRIL, 13), LocalTime.now()),
-                new KsInfoEntryDto('Opóźnienie Katowice', LocalDate.of(2017, Month.APRIL, 13), LocalTime.now())
+                new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDateTime.of(2017, Month.APRIL, 13, 0, 0)),
+                new KsInfoEntryDto('Opóźnienie Katowice', LocalDateTime.of(2017, Month.APRIL, 13, 0, 0))
         ]
 
         repository.countByDetailsUrl(LocalDateTime.of(2017, Month.APRIL, 13, 21, 0).format(DATE_FORMATTER)) >> 1
@@ -131,8 +127,7 @@ class KsPollerSpec extends Specification {
         1 * repository.save(new KsInfoEntry(
                 null,
                 'Opóźnienie Katowice',
-                LocalDate.of(2017, Month.APRIL, 13).format(DATE_FORMATTER),
-                LocalTime.now().format(TIME_FORMATTER),
+                LocalDateTime.of(2017, Month.APRIL, 13, 0, 0).format(DATE_FORMATTER),
                 ''
         ))
 
@@ -142,7 +137,7 @@ class KsPollerSpec extends Specification {
     void 'should properly match - on empty string should always match any input'() {
         when:
         service = setupService(patterns)
-        KsInfoEntryDto entry = new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDate.of(2017, Month.APRIL, 13), LocalTime.now())
+        KsInfoEntryDto entry = new KsInfoEntryDto('Wypadek Ustroń Zdrój', LocalDateTime.of(2017, Month.APRIL, 13, 0, 0))
 
         then:
         shouldSend == service.shouldSendMessage(entry)

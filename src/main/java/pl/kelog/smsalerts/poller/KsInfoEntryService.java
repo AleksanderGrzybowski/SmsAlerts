@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class KsInfoEntryService {
     
-    private static final Sort SORT = new Sort(Direction.DESC, "publishedDate", "scrapeTime");
+    private static final Sort SORT = new Sort(Direction.DESC, "publishedDate");
     private final KsInfoEntryRepository repository;
     
     public KsInfoEntry findById(long id) {

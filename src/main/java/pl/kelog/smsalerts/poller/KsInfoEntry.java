@@ -17,23 +17,20 @@ public class KsInfoEntry {
     
     private String publishedDate;
     
-    private String scrapeTime;
-    
     private String detailsUrl;
     
     @SuppressWarnings("unused")
     public KsInfoEntry() {
     }
     
-    KsInfoEntry(String title, String publishedDate, String scrapeTime,  String detailsUrl) {
+    KsInfoEntry(String title, String publishedDate, String detailsUrl) {
         this.title = title;
         this.publishedDate = publishedDate;
-        this.scrapeTime = scrapeTime;
         this.detailsUrl = detailsUrl;
     }
     
-    public KsInfoEntry(Long id, String title, String publishedDate, String scrapeTime, String detailsUrl) {
-        this(title, publishedDate, scrapeTime, detailsUrl);
+    public KsInfoEntry(Long id, String title, String publishedDate, String detailsUrl) {
+        this(title, publishedDate, detailsUrl);
         this.id = id;
     }
 }

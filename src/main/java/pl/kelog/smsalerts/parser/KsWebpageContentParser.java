@@ -4,6 +4,7 @@ import lombok.extern.java.Log;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
+import pl.kelog.smsalerts.dto.KsInfoEntryDto;
 
 import java.util.List;
 
@@ -15,10 +16,10 @@ public class KsWebpageContentParser {
     
     private final PolishDateParser dateParser = new PolishDateParser();
     
-    public List<KsInfoParsedEntryDto> parse(String content) {
+    public List<KsInfoEntryDto> parse(String content) {
         log.info("Parsing " + content.length() + " bytes...");
         
-        List<KsInfoParsedEntryDto> entries = Jsoup.parse(content)
+        List<KsInfoEntryDto> entries = Jsoup.parse(content)
                 .select("article").stream()
                 .map(this::extractEntry)
                 .collect(toList());
@@ -27,16 +28,16 @@ public class KsWebpageContentParser {
         return entries;
     }
     
-    private KsInfoParsedEntryDto extractEntry(Element entry) {
+    private KsInfoEntryDto extractEntry(Element entry) {
         // https://stackoverflow.com/questions/28295504/how-to-trim-no-break-space-in-java
         String date = entry.select(".post-date-xs")
                 .get(0).ownText()
                 .replaceAll("(^\\h*)|(\\h*$)", "")
                 .trim();
         
-        return new KsInfoParsedEntryDto(
+        return new KsInfoEntryDto(
                 entry.select("h2").select("a").text(),
-                dateParser.toLocalDate(date),
+                dateParser.toLocalDateTime(date),
                 entry.select("h2").select("a").attr("href")
         );
     }

@@ -16,7 +16,7 @@ class DetailsRedirectControllerSpec extends Specification {
     MockMvc mockMvc
 
     KsInfoEntryService ksInfoEntryServiceStub = Mock(KsInfoEntryService)
-    KsInfoEntry entry = new KsInfoEntry(123, '', '', '', 'http://detailsUrl')
+    KsInfoEntry entry = new KsInfoEntry(123, '', '', 'http://detailsUrl')
 
     void setup() {
         mockMvc = standaloneSetup(new DetailsRedirectController(ksInfoEntryServiceStub)).build()

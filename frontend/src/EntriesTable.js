@@ -25,7 +25,6 @@ class EntriesTable extends Component {
     <tr key={entry.id}>
       <td>
         {entry.publishedDate} &nbsp;
-        {entry.scrapeTime}
       </td>
       <td>
         <a href={entry.detailsUrl} target="_blank">

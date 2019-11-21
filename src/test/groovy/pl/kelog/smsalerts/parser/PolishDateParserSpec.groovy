@@ -2,8 +2,8 @@ package pl.kelog.smsalerts.parser
 
 import spock.lang.Specification
 
-import java.time.LocalDate
-import java.time.Month
+import java.time.LocalDateTime
+import java.time.Month 
 
 class PolishDateParserSpec extends Specification {
 
@@ -13,9 +13,9 @@ class PolishDateParserSpec extends Specification {
         parser = new PolishDateParser()
     }
 
-    void 'should properly parse both single and double digit date'() {
+    void 'should properly parse both single and double digit date, ignoring time'() {
         expect:
-        parser.toLocalDate('1 maja 2017') == LocalDate.of(2017, Month.MAY, 1)
-        parser.toLocalDate('10 maja 2017') == LocalDate.of(2017, Month.MAY, 10)
+        parser.toLocalDateTime('1 maja 2017 12:45') == LocalDateTime.of(2017, Month.MAY, 1, 12, 45)
+        parser.toLocalDateTime('10 maja 2017 09:45') == LocalDateTime.of(2017, Month.MAY, 10, 9, 45)
     }
 }

@@ -1,8 +1,9 @@
 package pl.kelog.smsalerts.parser
 
+import pl.kelog.smsalerts.dto.KsInfoEntryDto
 import spock.lang.Specification
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.Month 
 
 class KsWebpageContentParserSpec extends Specification {
@@ -15,20 +16,20 @@ class KsWebpageContentParserSpec extends Specification {
 
     void 'should extract titles and dates from sample page'() {
         given:
-        List<KsInfoParsedEntryDto> twoElements = [
-                new KsInfoParsedEntryDto(
-                        'Pociąg 94311 relacji Oświęcim 19:52 – Lubliniec 22:15 – opóźniony na odjeździe (delayed on route) 12 minut.',
-                        LocalDate.of(2018, Month.DECEMBER, 14),
-                        'https://kolejeslaskie.com/pociag-94311-relacji-oswiecim-1952-lubliniec-2215-opozniony-na-odjezdzie-delayed-on-route-12-minut/'
+        List<KsInfoEntryDto> twoElements = [
+                new KsInfoEntryDto(
+                        'Pociąg nr 44809 relacji  Katowice 12:24 – Bohumin 14:00 – opóźniony na trasie  (delayed on route) 10 minut.',
+                        LocalDateTime.of(2019, Month.NOVEMBER, 21, 13, 31),
+                        'https://www.kolejeslaskie.com/pociag-nr-44809-relacji-katowice-1224-bohumin-1400-opozniony-na-trasie-delayed-on-route-10-minut-6/'
                 ),
-                new KsInfoParsedEntryDto(
-                        'Pociąg 94660 relacji Wisła Gł. 19:25 – Katowice 21:45 – opóźniony na trasie (delayed on route) 20 minut.',
-                        LocalDate.of(2018, Month.DECEMBER, 14),
-                        'https://kolejeslaskie.com/pociag-94660-relacji-wisla-gl-1925-katowice-2145-opozniony-na-trasie-delayed-on-route-20-minut/'
+                new KsInfoEntryDto(
+                        'Pociąg nr 94143 relacji Katowice 10:57 – Cieszyn 12:34 – opóźniony na trasie (delayed on route) 18 minut.',
+                        LocalDateTime.of(2019, Month.NOVEMBER, 21, 12, 23),
+                        'https://www.kolejeslaskie.com/pociag-nr-94143-relacji-katowice-1057-cieszyn-1234-opozniony-na-trasie-delayed-on-route-18-minut/'
                 )
         ]
         when:
-        List<KsInfoParsedEntryDto> entries = parser.parse(readResource('1.html'))
+        List<KsInfoEntryDto> entries = parser.parse(readResource('1.html'))
 
         then:
         entries.size() == 20

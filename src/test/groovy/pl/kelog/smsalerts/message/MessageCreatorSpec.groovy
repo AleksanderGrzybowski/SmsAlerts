@@ -34,6 +34,6 @@ class MessageCreatorSpec extends Specification {
     }
 
     private static KsInfoEntry createEntry(String title) {
-        new KsInfoEntry(123, title, null, null, 'http://someurl')
+        new KsInfoEntry(123, title, null, 'http://someurl')
     }
 }
